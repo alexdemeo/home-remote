@@ -4,12 +4,13 @@ import { Route, Routes } from 'react-router-dom';
 import { Remote } from './types';
 import styled from 'styled-components';
 import { RemoteMapper } from './components/RemoteMapper';
+import { isMobile } from 'react-device-detect';
 
 const RemoteContainer = styled.div`
   border-width: 6px;
   border-radius: 24px;
   border-color: black;
-  width: 512px;
+  width: ${isMobile ? '90%' : '512px'};
   height: 90vh;
   text-align: center;
   margin: auto;
