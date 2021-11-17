@@ -1,0 +1,8 @@
+{
+  "name": "local-proxy",
+  "version": "1.0.0",
+  "description": "Proxy server to talk to Roku since no CORS in roku ECP",
+  "main": "index.js",
+  "author": "alexdemeo",
+  "license": "MIT"
+}
