@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
-import { Route, Routes } from 'react-router-dom';
-import { Remote } from './types';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { Remote } from './static/types';
 import styled from 'styled-components';
 import { RemoteMapper } from './components/RemoteMapper';
 import { isMobile } from 'react-device-detect';
@@ -11,7 +11,7 @@ const RemoteContainer = styled.div`
   border-radius: 24px;
   border-color: black;
   width: ${isMobile ? '90%' : '512px'};
-  height: 90vh;
+  height: 93vh;
   text-align: center;
   margin: auto;
   transform: translateY(2%);
@@ -24,9 +24,10 @@ function App() {
     <div className="App">
       <RemoteContainer>
         <Routes>
-          <Route path={Remote.ROKU} element={<RemoteMapper remote={Remote.ROKU} />} />
-          <Route path={Remote.COFFEE} element={<RemoteMapper remote={Remote.COFFEE} />} />
-          <Route path={Remote.PRINTER} element={<RemoteMapper remote={Remote.PRINTER} />} />
+          {Object.values(Remote).map(remote => (
+            <Route key={remote} path={remote} element={<RemoteMapper remote={remote} />} />
+          ))}
+          <Route path="/" element={<Navigate to={Remote.ROKU} />} />
         </Routes>
       </RemoteContainer>
     </div>

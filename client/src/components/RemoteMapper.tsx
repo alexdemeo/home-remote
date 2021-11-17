@@ -1,6 +1,9 @@
 import styled from 'styled-components';
-import { Remote } from '../types';
+import { Remote } from '../static/types';
 import { RokuRemote } from './roku/RokuRemote';
+import { RemoteSelector } from './RemoteSelector';
+import { Status } from './Status';
+import { defaultSettings } from '../static/contants';
 
 const Container = styled.div`
   display: flex;
@@ -8,19 +11,17 @@ const Container = styled.div`
   justify-content: flex-start;
 `;
 
-const Title = styled.div`
-  height: 8px;
-`;
-
 interface Props {
   remote: Remote;
 }
 
 export function RemoteMapper({ remote }: Props): JSX.Element {
+  const settings = defaultSettings;
+
   let comp: JSX.Element;
   switch (remote) {
     case Remote.ROKU:
-      comp = <RokuRemote />;
+      comp = <RokuRemote settings={settings} />;
       break;
     case Remote.COFFEE:
       comp = <div />;
@@ -31,7 +32,8 @@ export function RemoteMapper({ remote }: Props): JSX.Element {
   }
   return (
     <Container>
-      <Title>{remote}</Title>
+      <RemoteSelector remote={remote} />
+      <Status />
       {comp}
     </Container>
   );
