@@ -11,10 +11,8 @@ const RemoteContainer = styled.div`
   border-radius: 24px;
   border-color: black;
   width: ${isMobile ? '90%' : '512px'};
-  height: 93vh;
   text-align: center;
-  margin: auto;
-  transform: translateY(2%);
+  margin: 5% auto;
   padding: 16px;
   background-color: #61dafb;
 `;

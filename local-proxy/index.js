@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const proxy = require('express-http-proxy');
 const app = express();
 
-const PORT = 4000;
+const PORT = 4001;
 const HOST = 'localhost';
 
 app.use(cors());

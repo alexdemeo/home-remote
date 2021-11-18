@@ -2,9 +2,10 @@ import styled from 'styled-components';
 import { ActionRequest } from '../static/types';
 import { network } from '../utils/network';
 import { StatusProps } from './Status';
+import { isMobile } from 'react-device-detect';
 
 const Container = styled.button`
-  font-size: 48px;
+  font-size: ${isMobile ? 32 : 48}px;
   background-color: transparent;
   border: none;
 `;

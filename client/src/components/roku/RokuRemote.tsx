@@ -4,13 +4,12 @@ import { RemoteButton } from '../RemoteButton';
 import { StatusProps } from '../Status';
 
 const Container = styled.div`
-  margin-top: 2%;
+  margin: 2%;
 `;
 
 const TextInput = styled.input`
   text-align: center;
   border: none;
-  width: 90%;
   font-size: 24px;
   border-radius: 8px;
 `;
@@ -19,18 +18,17 @@ const Row = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-content: center;
+  align-items: center;
   padding: 10px;
 `;
 
 const CenteredRow = styled(Row)`
-  margin: auto;
+  margin: 0 auto;
 `;
 
 const Column = styled.div`
   display: flex;
   flex-direction: column;
-  //justify-content: space-between;
 `;
 
 const StaticButtons = styled.div`
