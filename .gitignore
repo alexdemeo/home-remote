@@ -17,4 +17,4 @@ build/
 .idea/
 
 console.client.log.txt
-console.server.log.txt
+console.proxy.log.txt

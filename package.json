@@ -32,7 +32,7 @@
     "eject": "react-scripts eject",
     "start-pi": "yarn build && serve -s build -l 4000 >> console.client.log.txt 2>&1 &",
     "start-proxy": "PORT=4001 node --trace-warnings proxy.js",
-    "start-proxy-pi": "yarn start-proxy  >> console.proxy.log.txt 2>&1 &"
+    "start-proxy-pi": "yarn start-proxy >> console.proxy.log.txt 2>&1 &"
   },
   "eslintConfig": {
     "extends": [
