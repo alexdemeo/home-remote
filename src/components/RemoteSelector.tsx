@@ -20,9 +20,10 @@ const remotes = Object.values(Remote);
 
 interface Props {
   remote: Remote;
+  onRefresh: () => void;
 }
 
-export function RemoteSelector({ remote }: Props): JSX.Element {
+export function RemoteSelector({ remote, onRefresh }: Props): JSX.Element {
   const nextRemote = (dir: 'left' | 'right') => {
     const idx = remotes.findIndex(_remote => _remote === remote);
     return dir === 'right'

@@ -32,7 +32,7 @@ export function RemoteMapper({ remote }: Props): JSX.Element {
   }
   return (
     <Container>
-      <RemoteSelector remote={remote} />
+      <RemoteSelector remote={remote} onRefresh={() => {}}/>
       <Status {...status} />
       {comp}
     </Container>
