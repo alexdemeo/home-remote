@@ -1,6 +1,7 @@
 import styled from 'styled-components';
-import { ActionRequest, Remote, Settings } from '../../static/types';
+import { ActionRequest, ActionResponse, Remote, Settings } from '../../static/types';
 import { RemoteButton } from '../RemoteButton';
+import { StatusProps } from '../Status';
 
 const Container = styled.div`
   margin-top: 2%;
@@ -41,14 +42,12 @@ const DynamicButtons = styled.div``;
 
 interface Props {
   settings: Settings;
+  setStatus: (status: StatusProps) => void;
 }
 
-export function RokuRemote({ settings }: Props): JSX.Element {
-  const { ip, port } = settings[Remote.ROKU];
+export function RokuRemote({ settings, setStatus }: Props): JSX.Element {
   const req = (cmd: string): ActionRequest => ({
     remote: Remote.ROKU,
-    hostname: ip,
-    port,
     endpoint: `/keypress/${cmd}`,
   });
   return (
@@ -64,35 +63,35 @@ export function RokuRemote({ settings }: Props): JSX.Element {
       <StaticButtons>
         <Row>
           <Column>
-            <RemoteButton icon={'+'} request={req('VolumeUp')} onResponse={() => {}} />
-            <RemoteButton icon={'–'} request={req('VolumeDown')} onResponse={() => {}} />
-            <RemoteButton icon={'↲'} request={req('Back')} onResponse={() => {}} />
+            <RemoteButton icon={'+'} request={req('VolumeUp')} setStatus={setStatus} />
+            <RemoteButton icon={'–'} request={req('VolumeDown')} setStatus={setStatus} />
+            <RemoteButton icon={'↲'} request={req('Back')} setStatus={setStatus} />
           </Column>
           <Column>
-            <RemoteButton icon={'⏻'} request={req('Power')} onResponse={() => {}} />
-            <RemoteButton icon={'⁌'} request={req('VolumeMute')} onResponse={() => {}} />
-            <RemoteButton icon={'⌂'} request={req('Home')} onResponse={() => {}} />
+            <RemoteButton icon={'⏻'} request={req('Power')} setStatus={setStatus} />
+            <RemoteButton icon={'⁌'} request={req('VolumeMute')} setStatus={setStatus} />
+            <RemoteButton icon={'⌂'} request={req('Home')} setStatus={setStatus} />
           </Column>
         </Row>
         <CenteredRow>
-          <RemoteButton icon={'↑'} request={req('Up')} onResponse={() => {}} />
+          <RemoteButton icon={'↑'} request={req('Up')} setStatus={setStatus} />
         </CenteredRow>
         <CenteredRow>
-          <RemoteButton icon={'←'} request={req('Left')} onResponse={() => {}} />
-          <RemoteButton icon={'OK'} request={req('Select')} onResponse={() => {}} />
-          <RemoteButton icon={'→'} request={req('Right')} onResponse={() => {}} />
+          <RemoteButton icon={'←'} request={req('Left')} setStatus={setStatus} />
+          <RemoteButton icon={'OK'} request={req('Select')} setStatus={setStatus} />
+          <RemoteButton icon={'→'} request={req('Right')} setStatus={setStatus} />
         </CenteredRow>
         <CenteredRow>
-          <RemoteButton icon={'↓'} request={req('Down')} onResponse={() => {}} />
+          <RemoteButton icon={'↓'} request={req('Down')} setStatus={setStatus} />
         </CenteredRow>
         <Row>
-          <RemoteButton icon={'↻'} request={req('InstantReplay')} onResponse={() => {}} />
-          <RemoteButton icon={'*'} request={req('Info')} onResponse={() => {}} />
+          <RemoteButton icon={'↻'} request={req('InstantReplay')} setStatus={setStatus} />
+          <RemoteButton icon={'*'} request={req('Info')} setStatus={setStatus} />
         </Row>
         <Row>
-          <RemoteButton icon={'⦉⦉'} request={req('Rev')} onResponse={() => {}} />
-          <RemoteButton icon={'▻⫾⫾'} request={req('Play')} onResponse={() => {}} />
-          <RemoteButton icon={'⦊⦊'} request={req('Fwd')} onResponse={() => {}} />
+          <RemoteButton icon={'⦉⦉'} request={req('Rev')} setStatus={setStatus} />
+          <RemoteButton icon={'▻⫾⫾'} request={req('Play')} setStatus={setStatus} />
+          <RemoteButton icon={'⦊⦊'} request={req('Fwd')} setStatus={setStatus} />
         </Row>
       </StaticButtons>
       <DynamicButtons></DynamicButtons>

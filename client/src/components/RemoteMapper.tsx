@@ -2,8 +2,9 @@ import styled from 'styled-components';
 import { Remote } from '../static/types';
 import { RokuRemote } from './roku/RokuRemote';
 import { RemoteSelector } from './RemoteSelector';
-import { Status } from './Status';
+import { Status, StatusProps } from './Status';
 import { defaultSettings } from '../static/contants';
+import { useState } from 'react';
 
 const Container = styled.div`
   display: flex;
@@ -17,11 +18,11 @@ interface Props {
 
 export function RemoteMapper({ remote }: Props): JSX.Element {
   const settings = defaultSettings;
-
+  const [status, setStatus] = useState<StatusProps>({ status: -1, endpoint: '❌' });
   let comp: JSX.Element;
   switch (remote) {
     case Remote.ROKU:
-      comp = <RokuRemote settings={settings} />;
+      comp = <RokuRemote settings={settings} setStatus={setStatus} />;
       break;
     case Remote.COFFEE:
       comp = <div />;
@@ -33,8 +34,13 @@ export function RemoteMapper({ remote }: Props): JSX.Element {
   return (
     <Container>
       <RemoteSelector remote={remote} />
-      <Status />
+      <Status {...status} />
       {comp}
     </Container>
   );
+}
+
+const StatusCircleContainer = styled.div``;
+function StatusCircle(status: number): JSX.Element {
+  return <StatusCircleContainer />;
 }
