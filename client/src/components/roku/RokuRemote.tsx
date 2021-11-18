@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ActionRequest, ActionResponse, Remote, Settings } from '../../static/types';
+import { ActionRequest, Remote, Settings } from '../../static/types';
 import { RemoteButton } from '../RemoteButton';
 import { StatusProps } from '../Status';
 
@@ -20,7 +20,7 @@ const Row = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-content: center;
-  padding: 16px;
+  padding: 10px;
 `;
 
 const CenteredRow = styled(Row)`
@@ -30,7 +30,7 @@ const CenteredRow = styled(Row)`
 const Column = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  //justify-content: space-between;
 `;
 
 const StaticButtons = styled.div`

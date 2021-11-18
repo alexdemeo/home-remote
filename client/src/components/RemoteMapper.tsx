@@ -18,7 +18,7 @@ interface Props {
 
 export function RemoteMapper({ remote }: Props): JSX.Element {
   const settings = defaultSettings;
-  const [status, setStatus] = useState<StatusProps>({ status: -1, endpoint: '❌' });
+  const [status, setStatus] = useState<StatusProps>({ status: undefined, endpoint: '❌' });
   let comp: JSX.Element;
   switch (remote) {
     case Remote.ROKU:
@@ -38,9 +38,4 @@ export function RemoteMapper({ remote }: Props): JSX.Element {
       {comp}
     </Container>
   );
-}
-
-const StatusCircleContainer = styled.div``;
-function StatusCircle(status: number): JSX.Element {
-  return <StatusCircleContainer />;
 }

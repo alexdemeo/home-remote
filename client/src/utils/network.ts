@@ -7,6 +7,6 @@ export async function network(request: ActionRequest): Promise<ActionResponse> {
     headers: [['Content-Type', 'application/json']],
   });
   return {
-    status: fetchResult.status ?? -1,
+    status: fetchResult.status,
   };
 }

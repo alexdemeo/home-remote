@@ -8,11 +8,13 @@ const Container = styled.button`
   background-color: transparent;
   border: none;
 `;
+
 interface Props {
   icon: string;
   request: ActionRequest;
   setStatus: (status: StatusProps) => void;
 }
+
 export function RemoteButton({ icon, request, setStatus }: Props): JSX.Element {
   return (
     <Container
@@ -24,7 +26,7 @@ export function RemoteButton({ icon, request, setStatus }: Props): JSX.Element {
           })
           .catch(err => {
             console.error('Error: ', JSON.stringify(err));
-            setStatus({ status: -1, endpoint: request.endpoint });
+            setStatus({ status: undefined, endpoint: request.endpoint });
           });
       }}
     >
