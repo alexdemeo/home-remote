@@ -31,7 +31,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "start-proxy": "node --trace-warnings proxy.js",
-    "start-pi": "yarn build && sudo PORT=80 yarn start-proxy >> console.proxy.log.txt 2>&1 &"
+    "start-pi": "yarn build && yarn start-proxy >> console.proxy.log.txt 2>&1 &"
   },
   "eslintConfig": {
     "extends": [
