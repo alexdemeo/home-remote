@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const proxy = require('express-http-proxy');
-const path = require('path');
 const app = express();
 
 const PORT = 4001;
@@ -10,10 +9,6 @@ const HOST = 'localhost';
 
 app.use(cors());
 app.use(morgan('dev'));
-
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'build', 'index.html'));
-});
 
 app.use('/roku', proxy('192.168.1.226:8060'));
 app.use('/coffee', proxy('pi3.local:5000'));
