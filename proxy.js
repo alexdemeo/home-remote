@@ -11,13 +11,6 @@ const HOST = '0.0.0.0';
 app.use(cors());
 app.use(morgan('dev'));
 
-app.use('/*', (req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-});
-
 app.use('/roku', proxy('192.168.1.226:8060'));
 app.use('/coffee', proxy('pi3.local:5000'));
 app.use('/printer', proxy('pi2.local:5555'));
