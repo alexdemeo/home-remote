@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import { ActionRequest, Remote, Settings } from '../../static/types';
 import { RemoteButton } from '../RemoteButton';
 import { StatusProps } from '../Status';
+import { network } from '../../utils/network';
+import { useEffect, useState } from 'react';
 
 const Container = styled.div`
   margin: 2%;
@@ -43,11 +45,20 @@ interface Props {
   setStatus: (status: StatusProps) => void;
 }
 
+type RokuAppData = {
+  image: any;
+  launchId: number;
+};
+
 export function RokuRemote({ settings, setStatus }: Props): JSX.Element {
-  const req = (cmd: string): ActionRequest => ({
-    remote: Remote.ROKU,
-    endpoint: `/keypress/${cmd}`,
-  });
+  const [apps, setApps] = useState<RokuAppData[]>([]);
+  useEffect(() => {
+    network({ type: 'GET', remote: Remote.ROKU, endpoint: '/query/apps' })
+      .then(result => {
+        console.log('got back', result.data);
+      })
+      .catch(console.error);
+  }, []);
   return (
     <Container>
       <TextInput
@@ -92,7 +103,17 @@ export function RokuRemote({ settings, setStatus }: Props): JSX.Element {
           <RemoteButton icon={'⦊⦊'} request={req('Fwd')} setStatus={setStatus} />
         </Row>
       </StaticButtons>
-      <DynamicButtons></DynamicButtons>
+      <DynamicButtons>
+        {apps.map(app => (
+          <RemoteButton icon={''} request={req('none')} setStatus={setStatus} />
+        ))}
+      </DynamicButtons>
     </Container>
   );
 }
+
+const req = (cmd: string): ActionRequest => ({
+  type: 'POST',
+  remote: Remote.ROKU,
+  endpoint: `/keypress/${cmd}`,
+});

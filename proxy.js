@@ -3,19 +3,26 @@ const cors = require('cors');
 const morgan = require('morgan');
 const path = require('path');
 const proxy = require('express-http-proxy');
-const app = express();
 
 const PORT = +(process.env.PORT || 80);
 const HOST = '0.0.0.0';
 
+const app = express();
+
 app.use(cors());
 app.use(morgan('dev'));
+app.use(express.json());
 
-app.use('/static', express.static(path.join(__dirname, 'build//static')));
+const staticPath = path.resolve(__dirname, './build/static');
+const buildPath = path.resolve(__dirname, './build');
+const indexPath = path.resolve(__dirname, './build/index.html');
 
-app.get('/*', (req, res) => {
+app.use('/', express.static(buildPath));
+app.use('/static', express.static(staticPath));
+
+app.all('/', (req, res) => {
   console.log('response static to', req.hostname, 'ip', req.ip, 'path', req.path);
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  res.sendFile(indexPath);
 });
 
 app.use('/roku', proxy('192.168.1.226:8060'));
