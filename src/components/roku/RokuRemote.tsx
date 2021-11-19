@@ -57,8 +57,11 @@ export function RokuRemote({ settings, setStatus }: Props): JSX.Element {
       .then(result => {
         console.log('got back', result.data);
       })
-      .catch(console.error);
-  }, []);
+      .catch(error => {
+        console.error(error);
+        setStatus({ status: undefined, endpoint: '/query/apps' });
+      });
+  }, [setStatus]);
   return (
     <Container>
       <TextInput

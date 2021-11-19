@@ -9,6 +9,6 @@ export async function network(request: ActionRequest): Promise<ActionResponse> {
   });
   return {
     status: fetchResult.status,
-    data: request.type === 'POST' ? await fetchResult.json() : await fetchResult.text(),
+    data: await fetchResult.text(),
   };
 }

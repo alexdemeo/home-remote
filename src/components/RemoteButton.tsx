@@ -26,8 +26,8 @@ export function RemoteButton({ icon, request, setStatus }: Props): JSX.Element {
             setStatus({ ...response, endpoint: request.endpoint });
           })
           .catch(err => {
-            console.error('Error: ', JSON.stringify(err));
-            setStatus({ status: undefined, endpoint: request.endpoint });
+            console.error('Error: ', err.message);
+            setStatus({ status: err.message, endpoint: request.endpoint });
           });
       }}
     >
