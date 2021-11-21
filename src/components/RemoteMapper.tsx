@@ -5,6 +5,7 @@ import { RemoteSelector } from './RemoteSelector';
 import { Status, StatusProps } from './Status';
 import { defaultSettings } from '../static/contants';
 import { useState } from 'react';
+import { CoffeeRemote } from './CoffeeRemote';
 
 const Container = styled.div`
   display: flex;
@@ -24,7 +25,7 @@ export function RemoteMapper({ remote }: Props): JSX.Element {
       comp = <RokuRemote settings={settings} setStatus={setStatus} />;
       break;
     case Remote.COFFEE:
-      comp = <div />;
+      comp = <CoffeeRemote />;
       break;
     case Remote.PRINTER:
       comp = <div />;
@@ -32,7 +33,8 @@ export function RemoteMapper({ remote }: Props): JSX.Element {
   }
   return (
     <Container>
-      <RemoteSelector remote={remote} onRefresh={() => {}}/>
+      <RemoteSelector remote={remote} onRefresh={() => {}} />
+      <hr />
       <Status {...status} />
       {comp}
     </Container>

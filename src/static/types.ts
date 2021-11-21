@@ -7,14 +7,16 @@ export enum Remote {
 export type Settings = { [remote in Remote]: any };
 
 export interface ActionRequest {
-  type: string;
+  httpMethod: string;
   remote: Remote;
   endpoint: string;
+  type: 'text' | 'raw';
 }
 
 export interface ActionResponse {
   status: number;
-  data?: any;
+  textData?: string;
+  rawData?: ArrayBuffer;
 }
 
 export function remoteToEndpoint(remote: Remote): string {
@@ -27,3 +29,11 @@ export function remoteToEndpoint(remote: Remote): string {
       return 'station';
   }
 }
+
+export type RokuAppData = {
+  image: ArrayBuffer;
+  launchId: string | number;
+  name: string;
+};
+
+export type RokuTvData = { inputs: RokuAppData[]; apps: RokuAppData[] };

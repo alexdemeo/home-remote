@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { ActionRequest, Remote, Settings } from '../../static/types';
+import { ActionRequest, Remote, RokuTvData, Settings } from '../../static/types';
 import { RemoteButton } from '../RemoteButton';
 import { StatusProps } from '../Status';
-import { network } from '../../utils/network';
+import { getAppsDataFromDevice } from '../../utils/network';
 import { useEffect, useState } from 'react';
 
 const Container = styled.div`
@@ -38,25 +38,26 @@ const StaticButtons = styled.div`
   flex-direction: column;
 `;
 
-const DynamicButtons = styled.div``;
+const DynamicButtons = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  padding-top: 4px;
+`;
+
+const AppsContainer = styled.div`
+  padding-left: 7%;
+`;
 
 interface Props {
   settings: Settings;
   setStatus: (status: StatusProps) => void;
 }
 
-type RokuAppData = {
-  image: any;
-  launchId: number;
-};
-
 export function RokuRemote({ settings, setStatus }: Props): JSX.Element {
-  const [apps, setApps] = useState<RokuAppData[]>([]);
+  const [appData, setAppData] = useState<RokuTvData>({ inputs: [], apps: [] });
   useEffect(() => {
-    network({ type: 'GET', remote: Remote.ROKU, endpoint: '/query/apps' })
-      .then(result => {
-        console.log('got back', result.data);
-      })
+    getAppsDataFromDevice()
+      .then(setAppData)
       .catch(error => {
         console.error(error);
         setStatus({ status: undefined, endpoint: '/query/apps' });
@@ -106,17 +107,35 @@ export function RokuRemote({ settings, setStatus }: Props): JSX.Element {
           <RemoteButton icon={'⦊⦊'} request={req('Fwd')} setStatus={setStatus} />
         </Row>
       </StaticButtons>
-      <DynamicButtons>
-        {apps.map(app => (
-          <RemoteButton icon={''} request={req('none')} setStatus={setStatus} />
-        ))}
-      </DynamicButtons>
+      <AppsContainer>
+        <DynamicButtons>
+          {appData.inputs.map((app, i) => (
+            <RemoteButton
+              key={`input-${i}`}
+              icon={{ imgData: app.image, text: app.name }}
+              request={req(app.launchId, 'launch')}
+              setStatus={setStatus}
+            />
+          ))}
+        </DynamicButtons>
+        <DynamicButtons>
+          {appData.apps.map((app, i) => (
+            <RemoteButton
+              key={`app-${i}`}
+              icon={{ imgData: app.image, text: app.name }}
+              request={req(app.launchId, 'launch')}
+              setStatus={setStatus}
+            />
+          ))}
+        </DynamicButtons>
+      </AppsContainer>
     </Container>
   );
 }
 
-const req = (cmd: string): ActionRequest => ({
-  type: 'POST',
+const req = (cmd: string | number, type: 'keypress' | 'launch' = 'keypress'): ActionRequest => ({
+  httpMethod: 'POST',
   remote: Remote.ROKU,
-  endpoint: `/keypress/${cmd}`,
+  endpoint: `/${type}/${cmd}`,
+  type: 'text',
 });

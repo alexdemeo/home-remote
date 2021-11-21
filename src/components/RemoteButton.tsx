@@ -10,8 +10,12 @@ const Container = styled.button`
   border: none;
 `;
 
+const IconImage = styled.img`
+  width: 128px;
+`;
+
 interface Props {
-  icon: string;
+  icon: string | { imgData: ArrayBuffer; text: string };
   request: ActionRequest;
   setStatus: (status: StatusProps) => void;
 }
@@ -31,7 +35,7 @@ export function RemoteButton({ icon, request, setStatus }: Props): JSX.Element {
           });
       }}
     >
-      {icon}
+      {typeof icon === 'string' ? icon : <IconImage alt="" src={URL.createObjectURL(new Blob([icon.imgData]))} />}
     </Container>
   );
 }
