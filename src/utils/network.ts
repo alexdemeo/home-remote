@@ -1,8 +1,9 @@
 import { ActionRequest, ActionResponse, Remote, RokuAppData, RokuTvData } from '../static/types';
+import { StatusProps } from '../components/Status';
 
 export async function network(request: ActionRequest): Promise<ActionResponse> {
   const url = `/${request.remote}${request.endpoint}`;
-  console.log('fetch(', url, ')');
+  console.log('fetch(', request.httpMethod, url, ')');
   const fetchResult = await fetch(url, {
     method: request.httpMethod,
     headers: [['Content-Type', 'application/json']],
@@ -10,13 +11,12 @@ export async function network(request: ActionRequest): Promise<ActionResponse> {
   return {
     status: fetchResult.status,
     textData: request.type === 'text' ? await fetchResult.text() : undefined,
-    rawData: request.type === 'raw' ? await fetchResult.arrayBuffer() : undefined,
+    blobData: request.type === 'blob' ? await fetchResult.blob() : undefined,
   };
 }
 
 export async function getAppsDataFromDevice(): Promise<RokuTvData> {
   const result = await network({ httpMethod: 'GET', remote: Remote.ROKU, endpoint: '/query/apps', type: 'text' });
-  console.log('got back', result.textData);
   const parser = new DOMParser();
   const xmlDoc = parser.parseFromString(result.textData!, 'text/xml');
   const xmlApps = xmlDoc.getElementsByTagName('app');
@@ -27,17 +27,17 @@ export async function getAppsDataFromDevice(): Promise<RokuTvData> {
       httpMethod: 'GET',
       remote: Remote.ROKU,
       endpoint: `/query/icon/${xmlApp.id}`,
-      type: 'raw',
+      type: 'blob',
     });
     imgDataPromises.push(thisDataPromise);
   }
   const allImgData: ActionResponse[] = await Promise.all(imgDataPromises);
   const allData: RokuAppData[] = allImgData.map((data, i) => ({
-    image: data.rawData!,
+    image: data.blobData!,
     launchId: xmlApps.item(i)?.id ?? -1,
     name: xmlApps.item(i)?.textContent ?? 'unknown',
   }));
-  console.log(allData.map(d => d.name));
+  // console.log(allData.map(d => d.name));
   const inputs: RokuAppData[] = [];
   const apps: RokuAppData[] = [];
   for (const data of allData) {
@@ -51,4 +51,16 @@ export async function getAppsDataFromDevice(): Promise<RokuTvData> {
     inputs,
     apps,
   };
+}
+
+export function networkStatusWrapper(request: ActionRequest, setStatus: (status: StatusProps) => void): void {
+  network(request)
+    .then(response => {
+      console.log('Received: ', JSON.stringify(response));
+      setStatus({ ...response, endpoint: request.endpoint });
+    })
+    .catch(err => {
+      console.error('Error: ', err.message);
+      setStatus({ status: err.message, endpoint: request.endpoint });
+    });
 }

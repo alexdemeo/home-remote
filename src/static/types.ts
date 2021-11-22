@@ -10,13 +10,13 @@ export interface ActionRequest {
   httpMethod: string;
   remote: Remote;
   endpoint: string;
-  type: 'text' | 'raw';
+  type: 'text' | 'blob';
 }
 
 export interface ActionResponse {
   status: number;
   textData?: string;
-  rawData?: ArrayBuffer;
+  blobData?: Blob;
 }
 
 export function remoteToEndpoint(remote: Remote): string {
@@ -31,7 +31,7 @@ export function remoteToEndpoint(remote: Remote): string {
 }
 
 export type RokuAppData = {
-  image: ArrayBuffer;
+  image: Blob;
   launchId: string | number;
   name: string;
 };

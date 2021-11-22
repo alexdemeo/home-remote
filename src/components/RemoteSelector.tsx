@@ -7,6 +7,7 @@ const Container = styled.div`
   flex-direction: row;
   justify-content: space-between;
   font-size: 20px;
+  color: white;
 `;
 
 const NavButton = styled.button`
@@ -14,6 +15,7 @@ const NavButton = styled.button`
   border-radius: 6px;
   width: 48px;
   height: 36px;
+  color: white;
 `;
 
 const remotes = Object.values(Remote);

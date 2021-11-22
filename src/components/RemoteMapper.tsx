@@ -6,6 +6,7 @@ import { Status, StatusProps } from './Status';
 import { defaultSettings } from '../static/contants';
 import { useState } from 'react';
 import { CoffeeRemote } from './CoffeeRemote';
+import { Bar } from './Bar';
 
 const Container = styled.div`
   display: flex;
@@ -34,8 +35,9 @@ export function RemoteMapper({ remote }: Props): JSX.Element {
   return (
     <Container>
       <RemoteSelector remote={remote} onRefresh={() => {}} />
-      <hr />
+      <Bar />
       <Status {...status} />
+      <Bar />
       {comp}
     </Container>
   );

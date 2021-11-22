@@ -6,6 +6,7 @@ const Container = styled.div`
   justify-content: space-evenly;
   font-size: 20px;
   padding: 8px 0 0;
+  color: white;
 `;
 
 export interface StatusProps {
