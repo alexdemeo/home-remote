@@ -1,10 +1,16 @@
 import styled from 'styled-components';
 
+const Stack = styled.div`
+  display: flex;
+  flex-direction: column;
+  color: white;
+`;
+
 const Container = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-  padding: 32px 0;
+  padding: 32px 0 0;
   justify-content: space-around;
 `;
 
@@ -18,13 +24,52 @@ const Button = styled.button<{ color: string }>`
 
 interface Props {
   onAction: (action: 'on' | 'off') => void;
+  status: 'on' | 'off' | 'unknown';
+  applianceName: string;
 }
 
-export function OnOffPanel({}: Props): JSX.Element {
+const StatusText = styled.div<{ borderColor: string }>`
+  font-size: 48px;
+  font-weight: bolder;
+  font-style: italic;
+  border-radius: 8px;
+  border: 4px solid ${({ borderColor }) => borderColor};
+  padding: 0 16px;
+  margin: auto;
+`;
+
+const OuterStatusText = styled.div`
+  padding: 16px 0;
+  font-size: 32px;
+`;
+
+const RED = '#ff6060';
+const GREEN = '#abff63';
+const YELLOW = '#ffdc68';
+export function OnOffPanel({ onAction, applianceName, status = 'unknown' }: Props): JSX.Element {
   return (
-    <Container>
-      <Button color="red">off</Button>
-      <Button color="green">on</Button>
-    </Container>
+    <Stack>
+      <OuterStatusText>{applianceName} status</OuterStatusText>
+      <StatusText borderColor={statusToColor(status)}>{status.toUpperCase()}</StatusText>
+      <Container>
+        <Button color={RED} disabled={status === 'off'} onClick={() => onAction('off')}>
+          off
+        </Button>
+        <Button color={GREEN} disabled={status === 'on'} onClick={() => onAction('off')}>
+          on
+        </Button>
+      </Container>
+    </Stack>
   );
+}
+
+function statusToColor(status: 'on' | 'off' | 'unknown'): string {
+  switch (status) {
+    case 'on':
+      return GREEN;
+    case 'off':
+      return RED;
+    case 'unknown':
+      return YELLOW;
+  }
 }

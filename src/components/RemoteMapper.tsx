@@ -26,7 +26,7 @@ export function RemoteMapper({ remote }: Props): JSX.Element {
       comp = <RokuRemote settings={settings} setStatus={setStatus} />;
       break;
     case Remote.COFFEE:
-      comp = <CoffeeRemote />;
+      comp = <CoffeeRemote setStatus={setStatus} />;
       break;
     case Remote.PRINTER:
       comp = <div />;
