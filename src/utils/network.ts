@@ -1,4 +1,4 @@
-import { ActionRequest, ActionResponse, ApplianceStatus, Remote, RokuAppData, RokuTvData } from '../static/types';
+import { ActionRequest, ActionResponse, Remote, RokuAppData, RokuTvData } from '../static/types';
 import { StatusProps } from '../components/Status';
 
 export async function network(request: ActionRequest): Promise<ActionResponse> {

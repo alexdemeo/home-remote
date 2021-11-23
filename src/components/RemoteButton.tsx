@@ -5,8 +5,9 @@ import { StatusProps } from './Status';
 import { isMobile } from 'react-device-detect';
 import { useEffect } from 'react';
 
-const Container = styled.button`
-  font-size: ${isMobile ? 32 : 48}px;
+const Container = styled.button<{ isShortIcon: boolean }>`
+  // single character icon big: 32. mobile text small: 16. desktop text big not matter what (48)
+  font-size: ${({ isShortIcon }) => (isMobile && isShortIcon ? 32 : isMobile ? 16 : 48)}px;
   background-color: transparent;
   border: none;
   color: white;
@@ -39,14 +40,14 @@ export function RemoteButton({ icon, request, setStatus, key_ }: Props): JSX.Ele
     }
   }, [key, request, setStatus]);
   return (
-    <Container onClick={() => networkStatusWrapper(request, setStatus)}>
+    <Container isShortIcon={typeof icon === 'string'} onClick={() => networkStatusWrapper(request, setStatus)}>
       {typeof icon === 'string' ? icon : <ImageButton {...icon} />}
     </Container>
   );
 }
 
 const IconImage = styled.img<{ hasText: boolean }>`
-  width: 96px;
+  width: ${isMobile ? 84 : 148}px;
   margin-bottom: ${({ hasText }) => (hasText ? -24 : 0)}px;
 `;
 
@@ -54,7 +55,6 @@ const ImageButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
   font-size: 16px;
-  padding-bottom: 8px;
 `;
 
 interface ImageButtonProps {
