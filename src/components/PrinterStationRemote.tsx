@@ -56,6 +56,7 @@ export function PrinterStationRemote({ setStatus }: Props): JSX.Element {
           networkStatusWrapper(
             { remote: Remote.STATION, endpoint: `/station/printer/${action}`, type: 'text', httpMethod: 'PUT' },
             setStatus,
+            succeeded => succeeded && setPrinterStatus(printerStatus === 'on' ? 'off' : 'on'),
           )
         }
         status={printerStatus}
@@ -66,6 +67,7 @@ export function PrinterStationRemote({ setStatus }: Props): JSX.Element {
           networkStatusWrapper(
             { remote: Remote.STATION, endpoint: `/station/lights/${action}`, type: 'text', httpMethod: 'PUT' },
             setStatus,
+            succeeded => succeeded && setLightsStatus(lightsStatus === 'on' ? 'off' : 'on'),
           )
         }
         status={lightsStatus}

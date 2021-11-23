@@ -1,4 +1,4 @@
-import { ActionRequest, ActionResponse, Remote, RokuAppData, RokuTvData } from '../static/types';
+import { ActionRequest, ActionResponse, ApplianceStatus, Remote, RokuAppData, RokuTvData } from '../static/types';
 import { StatusProps } from '../components/Status';
 
 export async function network(request: ActionRequest): Promise<ActionResponse> {
@@ -52,14 +52,20 @@ export async function getAppsDataFromDevice(): Promise<RokuTvData> {
   };
 }
 
-export function networkStatusWrapper(request: ActionRequest, setStatus: (status: StatusProps) => void): void {
+export function networkStatusWrapper(
+  request: ActionRequest,
+  setStatus: (status: StatusProps) => void,
+  callback?: (succeeded: boolean) => void,
+): void {
   network(request)
     .then(response => {
       console.log('Received: ', JSON.stringify(response));
       setStatus({ ...response, endpoint: request.endpoint });
+      callback?.(true);
     })
     .catch(err => {
       console.error('Error: ', err.message);
       setStatus({ status: err.message, endpoint: request.endpoint });
+      callback?.(false);
     });
 }

@@ -34,6 +34,7 @@ export function CoffeeRemote({ setStatus }: Props): JSX.Element {
           networkStatusWrapper(
             { remote: Remote.COFFEE, endpoint: `/coffee/${action}`, type: 'text', httpMethod: 'PUT' },
             setStatus,
+            succeeded => succeeded && setCurrStatus(currStatus === 'on' ? 'off' : 'on'),
           )
         }
         status={currStatus}
