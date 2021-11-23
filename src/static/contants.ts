@@ -5,5 +5,5 @@ export const defaultSettings: Settings = {
     keyCommandsEnabled: true,
   },
   [Remote.COFFEE]: {},
-  [Remote.PRINTER]: {},
+  [Remote.STATION]: {},
 };

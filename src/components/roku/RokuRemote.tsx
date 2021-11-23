@@ -157,8 +157,8 @@ function AppGroup({
   }
   return (
     <AppGroupContainer>
-      {diced.map(row => (
-        <CenteredRow>{row}</CenteredRow>
+      {diced.map((row, i) => (
+        <CenteredRow key={i}>{row}</CenteredRow>
       ))}
     </AppGroupContainer>
   );

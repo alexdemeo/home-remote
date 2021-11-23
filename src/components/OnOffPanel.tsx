@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { ApplianceStatus } from '../static/types';
 
 const Stack = styled.div`
   display: flex;
@@ -23,8 +24,8 @@ const Button = styled.button<{ color: string }>`
 `;
 
 interface Props {
-  onAction: (action: 'on' | 'off') => void;
-  status: 'on' | 'off' | 'unknown';
+  onAction: (action: Omit<ApplianceStatus, 'unknown'>) => void;
+  status: ApplianceStatus;
   applianceName: string;
 }
 
@@ -55,7 +56,7 @@ export function OnOffPanel({ onAction, applianceName, status = 'unknown' }: Prop
         <Button color={RED} disabled={status === 'off'} onClick={() => onAction('off')}>
           off
         </Button>
-        <Button color={GREEN} disabled={status === 'on'} onClick={() => onAction('off')}>
+        <Button color={GREEN} disabled={status === 'on'} onClick={() => onAction('on')}>
           on
         </Button>
       </Container>
@@ -63,7 +64,7 @@ export function OnOffPanel({ onAction, applianceName, status = 'unknown' }: Prop
   );
 }
 
-function statusToColor(status: 'on' | 'off' | 'unknown'): string {
+function statusToColor(status: ApplianceStatus): string {
   switch (status) {
     case 'on':
       return GREEN;

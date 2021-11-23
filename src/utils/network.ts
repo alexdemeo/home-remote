@@ -37,7 +37,6 @@ export async function getAppsDataFromDevice(): Promise<RokuTvData> {
     launchId: xmlApps.item(i)?.id ?? -1,
     name: xmlApps.item(i)?.textContent ?? 'unknown',
   }));
-  // console.log(allData.map(d => d.name));
   const inputs: RokuAppData[] = [];
   const apps: RokuAppData[] = [];
   for (const data of allData) {

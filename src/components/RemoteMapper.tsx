@@ -7,6 +7,7 @@ import { defaultSettings } from '../static/contants';
 import { useState } from 'react';
 import { CoffeeRemote } from './CoffeeRemote';
 import { Bar } from './Bar';
+import { PrinterStationRemote } from './PrinterStationRemote';
 
 const Container = styled.div`
   display: flex;
@@ -28,8 +29,8 @@ export function RemoteMapper({ remote }: Props): JSX.Element {
     case Remote.COFFEE:
       comp = <CoffeeRemote setStatus={setStatus} />;
       break;
-    case Remote.PRINTER:
-      comp = <div />;
+    case Remote.STATION:
+      comp = <PrinterStationRemote setStatus={setStatus} />;
       break;
   }
   return (
