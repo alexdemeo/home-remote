@@ -49,7 +49,11 @@ export function RokuRemote({ settings, setStatus }: Props): JSX.Element {
   return (
     <Column>
       <Row>
-        <Checkbox type="checkbox" onClick={event => setKeyCommandsEnabled(event.currentTarget.checked)} />
+        <Checkbox
+          type="checkbox"
+          onClick={event => setKeyCommandsEnabled(event.currentTarget.checked)}
+          checked={enabled}
+        />
         <TextInput
           type="text"
           onInput={handler => {
