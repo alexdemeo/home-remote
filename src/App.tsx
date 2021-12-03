@@ -14,6 +14,8 @@ const RemoteContainer = styled.div`
   margin: auto;
   padding: 16px;
   background-color: #2d2d2d;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none; /* Disable selection/copy in UIWebView */
 `;
 
 function App() {

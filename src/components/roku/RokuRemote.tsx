@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { getAppsDataFromDevice, networkStatusWrapper } from '../../utils/network';
 import { req, Row } from './util';
 import { RokuTvData, Settings } from '../../static/types';
-import { RemoteButton } from '../RemoteButton';
+import { RemoteButton } from './RemoteButton';
 import { StatusProps } from '../Status';
 import { useEffect, useState } from 'react';
 import { Bar } from '../Bar';
@@ -23,6 +23,11 @@ const Column = styled.div`
 
 const DPad = styled.div`
   margin: -32px auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 224px;
+  padding: 48px 0 32px;
 `;
 
 const Checkbox = styled.input`
@@ -51,7 +56,7 @@ export function RokuRemote({ settings, setStatus }: Props): JSX.Element {
       <Row>
         <Checkbox
           type="checkbox"
-          onClick={event => setKeyCommandsEnabled(event.currentTarget.checked)}
+          onChange={event => setKeyCommandsEnabled(event.currentTarget.checked)}
           checked={enabled}
         />
         <TextInput

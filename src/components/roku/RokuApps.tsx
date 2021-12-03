@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { RokuAppData, RokuTvData } from '../../static/types';
 import { StatusProps } from '../Status';
-import { RemoteButton } from '../RemoteButton';
+import { RemoteButton } from './RemoteButton';
 import { req, Row } from './util';
 
 const AppGroupContainer = styled.div`
