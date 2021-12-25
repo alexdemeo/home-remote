@@ -1,17 +1,21 @@
 import styled from 'styled-components';
 import { ActionRequest } from '../../static/types';
+import { BUTTON_BORDER_COLOR } from '../../static/contants';
 import { networkStatusWrapper } from '../../utils/network';
 import { StatusProps } from '../Status';
 import { isMobile } from 'react-device-detect';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
-const Container = styled.button<{ isShortIcon: boolean }>`
+const Container = styled.div<{ isShortIcon: boolean }>`
   // single character icon big: 32. mobile text small: 16. desktop text big not matter what (48)
   font-size: ${({ isShortIcon }) => (isMobile && isShortIcon ? 32 : isMobile ? 16 : 48)}px;
+  padding: ${({ isShortIcon }) => (isShortIcon ? 16 : 0)}px;
+  margin: ${isMobile ? 4 : 12}px;
   background-color: transparent;
-  border: none;
+  border: ${({ isShortIcon }) => (isShortIcon ? `solid ${BUTTON_BORDER_COLOR} 4px` : 'none')};
+  border-radius: 16px;
   color: white;
-  margin: 0;
+  transform: scale(${({ isShortIcon }) => (isShortIcon ? 115 : 100)}%);
 `;
 
 interface Props {
@@ -70,6 +74,7 @@ export function RemoteButton({ icon, request, setStatus, key_ }: Props): JSX.Ele
 const IconImage = styled.img<{ hasText: boolean }>`
   width: ${isMobile ? 84 : 148}px;
   margin-bottom: ${({ hasText }) => (hasText ? -24 : 0)}px;
+  border-radius: 16px;
 `;
 
 const ImageButtonContainer = styled.div`

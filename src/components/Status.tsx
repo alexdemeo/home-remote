@@ -4,7 +4,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  font-size: 20px;
+  font-size: 24px;
   padding: 8px 0 0;
   color: white;
 `;

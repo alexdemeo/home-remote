@@ -4,6 +4,7 @@ import { Remote } from './static/types';
 import styled from 'styled-components';
 import { RemoteMapper } from './components/RemoteMapper';
 import { isMobile } from 'react-device-detect';
+import { REMOTE_BACKGROUND_COLOR } from './static/contants';
 
 const RemoteContainer = styled.div`
   width: ${isMobile ? '90%' : '512px'};
@@ -13,7 +14,7 @@ const RemoteContainer = styled.div`
   text-align: center;
   margin: auto;
   padding: 16px;
-  background-color: #2d2d2d;
+  background-color: ${REMOTE_BACKGROUND_COLOR};
   -webkit-touch-callout: none;
   -webkit-user-select: none; /* Disable selection/copy in UIWebView */
 `;
