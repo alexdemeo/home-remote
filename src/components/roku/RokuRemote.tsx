@@ -33,7 +33,7 @@ const Column = styled.div`
 `;
 
 const DPad = styled.div`
-  margin: auto 20%;
+  margin: -15% auto;
   display: flex;
   flex-direction: column;
   justify-content: center;

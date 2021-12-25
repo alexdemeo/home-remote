@@ -53,10 +53,7 @@ function Apps({
   return (
     <>
       {diced.map((row, i) => (
-        <div key={i}>
-          <Row key={i}>{row}</Row>
-          <br />
-        </div>
+        <Row key={i}>{row}</Row>
       ))}
     </>
   );

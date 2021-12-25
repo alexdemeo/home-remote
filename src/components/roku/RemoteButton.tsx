@@ -8,14 +8,15 @@ import { useEffect } from 'react';
 
 const Container = styled.div<{ isShortIcon: boolean }>`
   // single character icon big: 32. mobile text small: 16. desktop text big not matter what (48)
-  font-size: ${({ isShortIcon }) => (isMobile && isShortIcon ? 32 : isMobile ? 16 : 48)}px;
+  font-size: ${({ isShortIcon }) => (isMobile && isShortIcon ? 32 : isMobile ? 16 : 32)}px;
   padding: ${({ isShortIcon }) => (isShortIcon ? 16 : 0)}px;
-  margin: ${isMobile ? 4 : 12}px;
+  margin: ${isMobile ? 4 : 8}px;
   background-color: transparent;
-  border: ${({ isShortIcon }) => (isShortIcon ? `solid ${BUTTON_BORDER_COLOR} 4px` : 'none')};
+  border: solid ${BUTTON_BORDER_COLOR} 4px;
   border-radius: 16px;
   color: white;
   transform: scale(${({ isShortIcon }) => (isShortIcon ? 115 : 100)}%);
+  width: ${({ isShortIcon }) => (isShortIcon ? '56px' : 'inherit')};
 `;
 
 interface Props {
@@ -72,7 +73,7 @@ export function RemoteButton({ icon, request, setStatus, key_ }: Props): JSX.Ele
 }
 
 const IconImage = styled.img<{ hasText: boolean }>`
-  width: ${isMobile ? 84 : 148}px;
+  width: ${isMobile ? 84 : 96}px;
   margin-bottom: ${({ hasText }) => (hasText ? -24 : 0)}px;
   border-radius: 16px;
 `;

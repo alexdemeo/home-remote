@@ -7,7 +7,7 @@ import { isMobile } from 'react-device-detect';
 import { REMOTE_BACKGROUND_COLOR } from './static/contants';
 
 const RemoteContainer = styled.div`
-  width: ${isMobile ? '90%' : '512px'};
+  width: ${isMobile ? '90%' : '25%'};
   border-width: 24px;
   border-radius: 24px;
   border-color: black;
