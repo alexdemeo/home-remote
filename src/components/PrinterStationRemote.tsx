@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { network, networkStatusWrapper } from '../utils/network';
 import { OnOffPanel } from './OnOffPanel';
+import { Bar } from './Bar';
 
 const Container = styled.div``;
 
@@ -72,6 +73,14 @@ export function PrinterStationRemote({ setStatus }: Props): JSX.Element {
         }
         status={lightsStatus}
       />
+      <Bar />
+      <StreamVideoImg alt="" src="http://pi2.local:8080/?action=stream" />
     </Container>
   );
 }
+
+const StreamVideoImg = styled.img`
+  width: 100%;
+  border-radius: 6px;
+  transform: rotate(180deg);
+`;
