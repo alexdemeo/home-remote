@@ -81,8 +81,20 @@ export function RokuRemote({ settings, setStatus }: Props): JSX.Element {
       <Column>
         <Row>
           <Column>
-            <RemoteButton icon="+" key_={{ bind: '=', enabled }} request={req('VolumeUp')} setStatus={setStatus} />
-            <RemoteButton icon="–" key_={{ bind: '-', enabled }} request={req('VolumeDown')} setStatus={setStatus} />
+            <RemoteButton
+              icon="+"
+              key_={{ bind: '=', enabled }}
+              request={req('VolumeUp')}
+              setStatus={setStatus}
+              doRepeat
+            />
+            <RemoteButton
+              icon="–"
+              key_={{ bind: '-', enabled }}
+              request={req('VolumeDown')}
+              setStatus={setStatus}
+              doRepeat
+            />
             <RemoteButton icon="↲" request={req('Back')} setStatus={setStatus} />
           </Column>
           <Column>
@@ -93,20 +105,39 @@ export function RokuRemote({ settings, setStatus }: Props): JSX.Element {
         </Row>
         <DPad>
           <CenteredRow>
-            <RemoteButton icon="↑" key_={{ bind: 'ArrowUp', enabled }} request={req('Up')} setStatus={setStatus} />
+            <RemoteButton
+              icon="↑"
+              key_={{ bind: 'ArrowUp', enabled }}
+              request={req('Up')}
+              setStatus={setStatus}
+              doRepeat
+            />
           </CenteredRow>
           <CenteredRow>
-            <RemoteButton icon="←" key_={{ bind: 'ArrowLeft', enabled }} request={req('Left')} setStatus={setStatus} />
+            <RemoteButton
+              icon="←"
+              key_={{ bind: 'ArrowLeft', enabled }}
+              request={req('Left')}
+              setStatus={setStatus}
+              doRepeat
+            />
             <RemoteButton icon="OK" key_={{ bind: 'Enter', enabled }} request={req('Select')} setStatus={setStatus} />
             <RemoteButton
               icon="→"
               key_={{ bind: 'ArrowRight', enabled }}
               request={req('Right')}
               setStatus={setStatus}
+              doRepeat
             />
           </CenteredRow>
           <CenteredRow>
-            <RemoteButton icon="↓" key_={{ bind: 'ArrowDown', enabled }} request={req('Down')} setStatus={setStatus} />
+            <RemoteButton
+              icon="↓"
+              key_={{ bind: 'ArrowDown', enabled }}
+              request={req('Down')}
+              setStatus={setStatus}
+              doRepeat
+            />
           </CenteredRow>
         </DPad>
         <Row>
@@ -114,9 +145,9 @@ export function RokuRemote({ settings, setStatus }: Props): JSX.Element {
           <RemoteButton icon="*" request={req('Info')} setStatus={setStatus} />
         </Row>
         <Row>
-          <RemoteButton icon="⦉⦉" request={req('Rev')} setStatus={setStatus} />
+          <RemoteButton icon="⦉⦉" request={req('Rev')} setStatus={setStatus} doRepeat />
           <RemoteButton icon="▻⫾⫾" request={req('Play')} setStatus={setStatus} />
-          <RemoteButton icon="⦊⦊" request={req('Fwd')} setStatus={setStatus} />
+          <RemoteButton icon="⦊⦊" request={req('Fwd')} setStatus={setStatus} doRepeat />
         </Row>
       </Column>
       <Bar />

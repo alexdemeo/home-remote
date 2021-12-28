@@ -28,12 +28,15 @@ interface Props {
     bind: string;
     enabled: boolean;
   };
+  doRepeat?: boolean;
 }
 
-// const HOLD_DELAY_TO_TRIGGER_REPEAT_MS = 300;
-// const REPEAT_DELAY_MS = 350;
+const HOLD_DELAY_TO_TRIGGER_REPEAT_MS = 300;
+const REPEAT_DELAY_MS = 350;
 
-export function RemoteButton({ icon, request, setStatus, key_ }: Props): JSX.Element {
+let repeatTimer: NodeJS.Timeout | undefined = undefined;
+let delayTimer: NodeJS.Timeout | undefined = undefined;
+export function RemoteButton({ icon, request, setStatus, key_, doRepeat }: Props): JSX.Element {
   const key = key_;
   useEffect(() => {
     if (key?.enabled) {
@@ -50,22 +53,28 @@ export function RemoteButton({ icon, request, setStatus, key_ }: Props): JSX.Ele
 
   const onClick = () => networkStatusWrapper(request, setStatus);
   // const onClick = () => console.log('onclick', request.endpoint);
-  // let timer: NodeJS.Timeout | undefined = undefined;
+
+  const resetTimers = () => {
+    clearTimeout(delayTimer!);
+    clearInterval(repeatTimer!);
+  };
+  const onMouseUp = resetTimers;
+  const onMouseDown = () => {
+    resetTimers();
+    if (!!doRepeat) {
+      delayTimer = setTimeout(() => {
+        repeatTimer = setInterval(onClick, REPEAT_DELAY_MS);
+      }, HOLD_DELAY_TO_TRIGGER_REPEAT_MS);
+    }
+  };
   return (
     <Container
       isShortIcon={typeof icon === 'string'}
       onClick={onClick}
-      onMouseDown={() => {
-        // setTimeout(() => {
-        //   timer = setInterval(onClick, REPEAT_DELAY_MS);
-        // }, HOLD_DELAY_TO_TRIGGER_REPEAT_MS)
-      }}
-      onMouseUp={() => {
-        // if (timer) {
-        //   clearTimeout(timer);
-        //   timer = undefined;
-        // }
-      }}
+      onMouseDown={onMouseDown}
+      onMouseUp={onMouseUp}
+      onTouchStart={onMouseDown}
+      onTouchEnd={onMouseUp}
     >
       {typeof icon === 'string' ? icon : <ImageButton {...icon} />}
     </Container>
