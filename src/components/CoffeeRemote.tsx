@@ -38,6 +38,7 @@ export function CoffeeRemote({ setStatus }: Props): JSX.Element {
           )
         }
         status={currStatus}
+        onButtonNotificationDelayMinutes={15}
       />
     </Container>
   );

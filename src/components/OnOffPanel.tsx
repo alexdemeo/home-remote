@@ -27,6 +27,7 @@ interface Props {
   onAction: (action: Omit<ApplianceStatus, 'unknown'>) => void;
   status: ApplianceStatus;
   applianceName: string;
+  onButtonNotificationDelayMinutes?: number; // if undefined, no don't send a delayed "applianceName" been on x minutes notification
 }
 
 const StatusText = styled.div<{ borderColor: string }>`
@@ -47,16 +48,39 @@ const OuterStatusText = styled.div`
 const RED = '#ff6060';
 const GREEN = '#abff63';
 const YELLOW = '#ffdc68';
-export function OnOffPanel({ onAction, applianceName, status = 'unknown' }: Props): JSX.Element {
+export function OnOffPanel({
+  onAction,
+  applianceName,
+  onButtonNotificationDelayMinutes,
+  status = 'unknown',
+}: Props): JSX.Element {
+  const clickOn = () => {
+    onAction('on');
+    if (onButtonNotificationDelayMinutes) {
+      Notification.requestPermission().then(result => {
+        console.log('notification perms =', result);
+        if (result === 'granted') {
+          const icon = 'favicon.png';
+          const body = `${applianceName} has been on for ${onButtonNotificationDelayMinutes} minutes`;
+          console.log(`scheduled notification: ${body}`);
+          setTimeout(
+            () => new Notification('HomeRemote', { body, icon }),
+            onButtonNotificationDelayMinutes * 60 * 1000,
+          );
+        }
+      });
+    }
+  };
+  const clickOff = () => onAction('off');
   return (
     <Stack>
       <OuterStatusText>{applianceName} status</OuterStatusText>
       <StatusText borderColor={statusToColor(status)}>{status.toUpperCase()}</StatusText>
       <Container>
-        <Button color={RED} disabled={status === 'off'} onClick={() => onAction('off')}>
+        <Button color={RED} disabled={status === 'off'} onClick={clickOff}>
           off
         </Button>
-        <Button color={GREEN} disabled={status === 'on'} onClick={() => onAction('on')}>
+        <Button color={GREEN} disabled={status === 'on'} onClick={clickOn}>
           on
         </Button>
       </Container>
