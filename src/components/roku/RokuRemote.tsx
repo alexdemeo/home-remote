@@ -69,12 +69,10 @@ export function RokuRemote({ settings, setStatus }: Props): JSX.Element {
           type="text"
           onInput={handler => {
             const char = handler.currentTarget.value;
-            handler.currentTarget.value = '';
-            console.log(char);
-            const request = req(encodeURI(`Lit_${char}`));
+            const request = req(char ? encodeURI(`Lit_${char.slice(2)}`) : 'Backspace');
             networkStatusWrapper(request, setStatus);
           }}
-          placeholder="🔎"
+          value="🔎"
         />
       </Row>
       <br />
