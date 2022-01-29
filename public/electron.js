@@ -8,6 +8,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 560,
     height: 1080,
+    frame: false,
   });
   mainWindow.loadURL(`http://pi4.local`);
   // mainWindow.loadURL(`http://localhost:4001`);
