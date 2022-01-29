@@ -64,6 +64,7 @@ export function RemoteButton({ icon, request, setStatus, key_, doRepeat }: Props
     if (!!doRepeat) {
       delayTimer = setTimeout(() => {
         repeatTimer = setInterval(onClick, REPEAT_DELAY_MS);
+        onClick();
       }, HOLD_DELAY_TO_TRIGGER_REPEAT_MS);
     }
   };
