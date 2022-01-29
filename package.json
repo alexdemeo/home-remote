@@ -25,13 +25,25 @@
     "typescript": "^4.1.2",
     "web-vitals": "^1.0.1"
   },
+  "devDependencies": {
+    "electron": "^13.3.0",
+    "electron-builder": "^22.14.5"
+  },
   "scripts": {
     "dev": "PORT=4001 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "start-proxy": "node --trace-warnings proxy.js",
-    "start-pi": "yarn build && yarn start-proxy >> console.proxy.log.txt 2>&1 &"
+    "start-pi": "yarn build && yarn start-proxy >> console.proxy.log.txt 2>&1 &",
+    "start-electron": "electron public/electron.js",
+    "build-electron": "yarn build &&./node_modules/electron-builder/cli.js && unzip dist/home-remote-0.1.0-mac.zip && cp -r home-remote.app /Applications && rm -r home-remote.app"
+  },
+  "build": {
+    "appId": "alex.remote",
+    "mac": {
+      "icon": "public/icon.icns"
+    }
   },
   "eslintConfig": {
     "extends": [
