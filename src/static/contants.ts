@@ -9,5 +9,4 @@ export const defaultSettings: Settings = {
 };
 
 export const REMOTE_BACKGROUND_COLOR = '#2d2d2d';
-
 export const BUTTON_BORDER_COLOR = '#3d3d3d';

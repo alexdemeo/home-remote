@@ -4,13 +4,12 @@ import { Remote } from './static/types';
 import styled from 'styled-components';
 import { RemoteMapper } from './components/RemoteMapper';
 import { isMobile } from 'react-device-detect';
-import { REMOTE_BACKGROUND_COLOR } from './static/contants';
+import { BUTTON_BORDER_COLOR, REMOTE_BACKGROUND_COLOR } from './static/contants';
 
 const RemoteContainer = styled.div`
-  width: ${isMobile ? '90%' : '25%'};
-  border-width: 24px;
+  width: ${isMobile ? '90%' : '500px'};
   border-radius: 24px;
-  border-color: black;
+  border: 4px solid ${BUTTON_BORDER_COLOR};
   text-align: center;
   margin: auto;
   padding: 16px;
@@ -20,6 +19,13 @@ const RemoteContainer = styled.div`
 `;
 
 function App() {
+  document.body.style.backgroundColor = REMOTE_BACKGROUND_COLOR;
+  document.onkeydown = evt => {
+    // prevent arrow keys from scrolling, since they're used for navigating Roku DPad
+    if (['ArrowUp', 'ArrowDown'].includes(evt.code)) {
+      return false;
+    }
+  };
   return (
     <Routes>
       {Object.values(Remote).map(remote => (

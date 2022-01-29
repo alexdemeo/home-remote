@@ -18,3 +18,5 @@ build/
 
 console.client.log.txt
 console.proxy.log.txt
+
+dist/
