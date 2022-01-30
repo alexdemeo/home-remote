@@ -38,6 +38,7 @@ function Apps({
       icon={{ blob: app.image, text: textEnabled ? app.name : undefined }}
       request={req(app.launchId, 'launch')}
       setStatus={setStatus}
+      enabled={true}
     />
   ));
   const w = 3;

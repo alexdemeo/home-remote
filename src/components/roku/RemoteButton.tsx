@@ -23,6 +23,7 @@ interface Props {
   icon: string | ImageButtonProps;
   request: ActionRequest;
   setStatus: (status: StatusProps) => void;
+  enabled: boolean;
   // key is taken by react. not inventive enough to abandon the object structure implying key.bind
   key_?: {
     bind: string;
@@ -36,12 +37,12 @@ const REPEAT_DELAY_MS = 350;
 
 let repeatTimer: NodeJS.Timeout | undefined = undefined;
 let delayTimer: NodeJS.Timeout | undefined = undefined;
-export function RemoteButton({ icon, request, setStatus, key_, doRepeat }: Props): JSX.Element {
+export function RemoteButton({ icon, request, setStatus, key_, doRepeat, enabled }: Props): JSX.Element {
   const key = key_;
   useEffect(() => {
     if (key?.enabled) {
       const keyDown = (event: KeyboardEvent) => {
-        if (key?.enabled && event.key === key?.bind) {
+        if (key?.enabled && event.key === key?.bind && enabled) {
           console.log(event.key, key?.bind);
           networkStatusWrapper(request, setStatus);
         }
@@ -49,7 +50,7 @@ export function RemoteButton({ icon, request, setStatus, key_, doRepeat }: Props
       window.addEventListener('keydown', keyDown, true);
       return () => window.removeEventListener('keydown', keyDown, true);
     }
-  }, [key, request, setStatus]);
+  }, [key, request, setStatus, enabled]);
 
   const onClick = () => networkStatusWrapper(request, setStatus);
   // const onClick = () => console.log('onclick', request.endpoint);
