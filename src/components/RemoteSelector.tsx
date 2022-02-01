@@ -6,25 +6,34 @@ import { BUTTON_BORDER_COLOR } from '../static/contants';
 const Container = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  font-size: 28px;
+  font-size: 30px;
   color: white;
+  transform: scaleX(1.075);
 `;
 
-const NavButton = styled.div`
+const THICK = 5;
+const THIN = 2;
+const SingleRemoteSelector = styled.div<{ selected: boolean }>`
   background-color: transparent;
-  border-radius: 6px;
-  width: 48px;
-  height: 36px;
+  border-radius: 6px 6px 0 0;
+  padding: 4px 8px 12px;
   color: white;
-  font-size: 32px;
-  border: solid ${BUTTON_BORDER_COLOR} 2px;
+  font-size: 28px;
+  border: solid ${BUTTON_BORDER_COLOR} ${({ selected }) => (selected ? THICK : THIN)}px;
+  border-bottom: ${({ selected }) => (selected ? 'none' : `solid ${BUTTON_BORDER_COLOR} ${THICK}px`)};
 `;
 
 const RemoteLink = styled(Link)`
   text-decoration: none;
-  margin: 2px;
-  padding: 2px;
+`;
+
+const Space = styled.div`
+  width: 100%;
+  border-bottom: solid ${BUTTON_BORDER_COLOR} ${THICK}px;
+`;
+
+const SmallSpace = styled(Space)`
+  width: 20px;
 `;
 
 const remotes = Object.values(Remote);
@@ -35,21 +44,15 @@ interface Props {
 }
 
 export function RemoteSelector({ remote, onRefresh }: Props): JSX.Element {
-  const nextRemote = (dir: 'left' | 'right') => {
-    const idx = remotes.findIndex(_remote => _remote === remote);
-    return dir === 'right'
-      ? remotes[idx === remotes.length - 1 ? 0 : idx + 1]
-      : remotes[idx === 0 ? remotes.length - 1 : idx - 1];
-  };
   return (
     <Container>
-      <RemoteLink to={`/${nextRemote('left')}`}>
-        <NavButton>{'<'}</NavButton>
-      </RemoteLink>
-      {remote.toLowerCase()}
-      <RemoteLink to={`/${nextRemote('right')}`}>
-        <NavButton>{'>'}</NavButton>
-      </RemoteLink>
+      <SmallSpace />
+      {remotes.map(_remote => (
+        <RemoteLink to={`/${_remote}`}>
+          <SingleRemoteSelector selected={_remote === remote}>{_remote}</SingleRemoteSelector>
+        </RemoteLink>
+      ))}
+      <Space />
     </Container>
   );
 }
