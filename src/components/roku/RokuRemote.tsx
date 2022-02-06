@@ -109,11 +109,23 @@ export function RokuRemote({ settings, setStatus }: Props): JSX.Element {
               enabled={!isSearching}
               doRepeat
             />
-            <RemoteButton icon="↲" request={req('Back')} setStatus={setStatus} enabled={!isSearching} />
+            <RemoteButton
+              icon="↲"
+              key_={{ bind: 'Escape', enabled }}
+              request={req('Back')}
+              setStatus={setStatus}
+              enabled={!isSearching}
+            />
           </Column>
           <Column>
             <RemoteButton icon="⏻" request={req('Power')} setStatus={setStatus} enabled={!isSearching} />
-            <RemoteButton icon="⁌" request={req('VolumeMute')} setStatus={setStatus} enabled={!isSearching} />
+            <RemoteButton
+              icon="⁌"
+              key_={{ bind: '0', enabled }}
+              request={req('VolumeMute')}
+              setStatus={setStatus}
+              enabled={!isSearching}
+            />
             <RemoteButton icon="⌂" request={req('Home')} setStatus={setStatus} enabled={!isSearching} />
           </Column>
         </Row>
@@ -170,7 +182,13 @@ export function RokuRemote({ settings, setStatus }: Props): JSX.Element {
         </Row>
         <Row>
           <RemoteButton icon="⦉⦉" request={req('Rev')} setStatus={setStatus} enabled={!isSearching} doRepeat />
-          <RemoteButton icon="▻⫾⫾" request={req('Play')} setStatus={setStatus} enabled={!isSearching} />
+          <RemoteButton
+            icon="▻⫾⫾"
+            key_={{ bind: ' ', enabled }}
+            request={req('Play')}
+            setStatus={setStatus}
+            enabled={!isSearching}
+          />
           <RemoteButton icon="⦊⦊" request={req('Fwd')} setStatus={setStatus} enabled={!isSearching} doRepeat />
         </Row>
       </Column>

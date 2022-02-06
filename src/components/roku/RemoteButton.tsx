@@ -42,6 +42,7 @@ export function RemoteButton({ icon, request, setStatus, key_, doRepeat, enabled
   useEffect(() => {
     if (key?.enabled) {
       const keyDown = (event: KeyboardEvent) => {
+        // console.log(event.key);
         if (key?.enabled && event.key === key?.bind && enabled) {
           console.log(event.key, key?.bind);
           networkStatusWrapper(request, setStatus);
