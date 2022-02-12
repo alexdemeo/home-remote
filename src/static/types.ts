@@ -27,7 +27,7 @@ export type RokuTvData = { inputs: RokuAppData[]; apps: RokuAppData[] };
 
 export type ApplianceStatus = 'on' | 'off' | 'unknown';
 
-export type StatusState = { code: number | undefined; endpoint: string };
+export type StatusState = { code: number | undefined; endpoint: string; repeatCount?: number };
 
 export type GlobalState = {
   status: StatusState;

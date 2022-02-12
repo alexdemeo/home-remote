@@ -4,7 +4,7 @@ import { BUTTON_BORDER_COLOR } from '../../static/constants';
 import { networkStatusWrapper } from '../../utils/network';
 import { isMobile } from 'react-device-detect';
 import { useEffect } from 'react';
-import { useRemoteReducer } from '../../reducer';
+import { useRemoteStore } from '../../RemoteStoreProvider';
 
 const Container = styled.div<{ isShortIcon: boolean }>`
   // single character icon big: 32. mobile text small: 16. desktop text big not matter what (48)
@@ -38,7 +38,7 @@ let repeatTimer: NodeJS.Timeout | undefined = undefined;
 let delayTimer: NodeJS.Timeout | undefined = undefined;
 export function RemoteButton({ icon, request, key_, doRepeat, enabled }: Props): JSX.Element {
   const key = key_;
-  const [, dispatch] = useRemoteReducer();
+  const [state, dispatch] = useRemoteStore();
   useEffect(() => {
     if (key?.enabled) {
       const keyDown = (event: KeyboardEvent) => {
@@ -51,7 +51,7 @@ export function RemoteButton({ icon, request, key_, doRepeat, enabled }: Props):
       window.addEventListener('keydown', keyDown, true);
       return () => window.removeEventListener('keydown', keyDown, true);
     }
-  }, [key, request, dispatch, enabled]);
+  }, [key, request, state, dispatch, enabled]);
 
   const onClick = () => networkStatusWrapper(request, dispatch);
   // const onClick = () => console.log('onclick', request.endpoint);

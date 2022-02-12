@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { network, networkStatusWrapper } from '../utils/network';
 import { OnOffPanel } from './OnOffPanel';
 import { Bar } from './Bar';
-import { useRemoteReducer } from '../reducer';
+import { useRemoteStore } from '../RemoteStoreProvider';
 
 const Container = styled.div``;
 
@@ -25,7 +25,7 @@ const lightsStatusReq: ActionRequest = {
 export function PrinterStationRemote(): JSX.Element {
   const [printerStatus, setPrinterStatus] = useState<ApplianceStatus>('unknown');
   const [lightsStatus, setLightsStatus] = useState<ApplianceStatus>('unknown');
-  const [, dispatch] = useRemoteReducer();
+  const [, dispatch] = useRemoteStore();
   useEffect(() => {
     network(printerStatusReq)
       .then(result => {

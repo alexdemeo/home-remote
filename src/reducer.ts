@@ -1,8 +1,6 @@
-import { useReducer } from 'react';
-import { INITIAL_STATE } from './static/constants';
 import { GlobalState, Remote, StatusState } from './static/types';
 
-type ActionSetStatus = { type: 'setStatus' } & StatusState;
+type ActionSetStatus = { type: 'setStatus' } & Pick<StatusState, 'endpoint' | 'code'>;
 type ActionSetKeyCommandsEnabled = { type: 'setKeyCommandsEnabled'; enabled: boolean };
 
 export type RemoteAction = ActionSetStatus | ActionSetKeyCommandsEnabled;
@@ -10,12 +8,13 @@ export type RemoteAction = ActionSetStatus | ActionSetKeyCommandsEnabled;
 export function reducer(state: GlobalState, action: RemoteAction): GlobalState {
   switch (action.type) {
     case 'setStatus':
+      const isSameRequestAndResult = state.status.endpoint === action.endpoint && state.status.code === action.code;
+      const oldRequestCount = state.status.repeatCount;
+      const repeatCount = isSameRequestAndResult ? (oldRequestCount ?? 0) + 1 : undefined;
+      console.log({ ...action, repeatCount });
       return {
         ...state,
-        status: {
-          code: action.code,
-          endpoint: action.endpoint,
-        },
+        status: { ...action, repeatCount },
       };
     case 'setKeyCommandsEnabled':
       return {
@@ -27,5 +26,3 @@ export function reducer(state: GlobalState, action: RemoteAction): GlobalState {
       };
   }
 }
-
-export const useRemoteReducer = () => useReducer(reducer, INITIAL_STATE);

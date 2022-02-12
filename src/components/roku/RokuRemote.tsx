@@ -6,7 +6,7 @@ import { RemoteButton } from './RemoteButton';
 import { useEffect, useState } from 'react';
 import { Bar } from '../Bar';
 import { RokuApps } from './RokuApps';
-import { useRemoteReducer } from '../../reducer';
+import { useRemoteStore } from '../../RemoteStoreProvider';
 
 const CenteredRow = styled(Row)`
   justify-content: center;
@@ -41,7 +41,7 @@ const DPad = styled.div`
 `;
 
 export function RokuRemote(): JSX.Element {
-  const [state, dispatch] = useRemoteReducer();
+  const [state, dispatch] = useRemoteStore();
   const [appData, setAppData] = useState<RokuTvData>({ inputs: [], apps: [] });
 
   const [isSearching, setIsSearching] = useState<boolean>(false);

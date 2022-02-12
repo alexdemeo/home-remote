@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useRemoteReducer } from '../reducer';
+import { useRemoteStore } from '../RemoteStoreProvider';
 
 const Container = styled.div`
   display: flex;
@@ -11,15 +11,17 @@ const Container = styled.div`
 `;
 
 export function Status(): JSX.Element {
-  const [state] = useRemoteReducer();
+  const [state] = useRemoteStore();
   const {
-    status: { code, endpoint },
+    status: { code, endpoint, repeatCount },
   } = state;
+  console.log(state.status);
   return (
     <Container>
       {code ?? 'x'}
       <StatusCircle status={code} />
       {endpoint}
+      {/*<>{`(${repeatCount})`}</>*/}
     </Container>
   );
 }

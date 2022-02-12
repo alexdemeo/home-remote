@@ -3,7 +3,7 @@ import { OnOffPanel } from './OnOffPanel';
 import { network, networkStatusWrapper } from '../utils/network';
 import { ActionRequest, Remote } from '../static/types';
 import { useEffect, useState } from 'react';
-import { useRemoteReducer } from '../reducer';
+import { useRemoteStore } from '../RemoteStoreProvider';
 
 const Container = styled.div``;
 
@@ -11,7 +11,7 @@ const statusReq: ActionRequest = { remote: Remote.COFFEE, endpoint: '/coffee/sta
 
 export function CoffeeRemote(): JSX.Element {
   const [currStatus, setCurrStatus] = useState<'on' | 'off' | 'unknown'>('unknown');
-  const [, dispatch] = useRemoteReducer();
+  const [, dispatch] = useRemoteStore();
   useEffect(() => {
     network(statusReq)
       .then(result => {

@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { RemoteMapper } from './components/RemoteMapper';
 import { isMobile } from 'react-device-detect';
 import { BUTTON_BORDER_COLOR, REMOTE_BACKGROUND_COLOR } from './static/constants';
+import { RemoteStoreProvider } from './RemoteStoreProvider';
 
 const RemoteContainer = styled.div`
   width: ${isMobile ? '90%' : '500px'};
@@ -26,6 +27,7 @@ function App() {
       return false;
     }
   };
+
   return (
     <Routes>
       {Object.values(Remote).map(remote => (
@@ -33,9 +35,11 @@ function App() {
           key={remote}
           path={remote}
           element={
-            <RemoteContainer>
-              <RemoteMapper remote={remote} />
-            </RemoteContainer>
+            <RemoteStoreProvider>
+              <RemoteContainer>
+                <RemoteMapper remote={remote} />
+              </RemoteContainer>
+            </RemoteStoreProvider>
           }
         />
       ))}
