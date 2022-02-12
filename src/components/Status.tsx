@@ -4,10 +4,20 @@ import { useRemoteStore } from '../RemoteStoreProvider';
 const Container = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: space-around;
   font-size: 24px;
   padding: 8px 0 0;
   color: white;
+`;
+
+const RepeatCounter = styled.div`
+  color: #9b9b9b;
+`;
+
+const StatusCode = styled.div<{ color: string }>`
+  color: ${({ color }) => color};
+  font-weight: bold;
+  font-size: 28px;
 `;
 
 export function Status(): JSX.Element {
@@ -15,30 +25,21 @@ export function Status(): JSX.Element {
   const {
     status: { code, endpoint, repeatCount },
   } = state;
-  console.log(state.status);
   return (
     <Container>
-      {code ?? 'x'}
-      <StatusCircle status={code} />
+      <StatusCode color={colorFor(code)}>{code ?? 'x'}</StatusCode>
       {endpoint}
-      {/*<>{`(${repeatCount})`}</>*/}
+      <RepeatCounter>{repeatCount ?? ''}</RepeatCounter>
     </Container>
   );
 }
 
-const StatusCircleContainer = styled.div<{ color: string }>`
-  background-color: ${({ color }) => color};
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-`;
-
-function StatusCircle({ status }: { status: number | undefined }): JSX.Element {
+function colorFor(status?: number): string {
   let color = 'red';
   if (status && 200 <= status && status < 300) {
     color = 'green';
   } else if (status && 400 <= status && status < 500) {
     color = 'yellow';
   }
-  return <StatusCircleContainer color={color} />;
+  return color;
 }

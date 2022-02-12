@@ -10,8 +10,7 @@ export function reducer(state: GlobalState, action: RemoteAction): GlobalState {
     case 'setStatus':
       const isSameRequestAndResult = state.status.endpoint === action.endpoint && state.status.code === action.code;
       const oldRequestCount = state.status.repeatCount;
-      const repeatCount = isSameRequestAndResult ? (oldRequestCount ?? 0) + 1 : undefined;
-      console.log({ ...action, repeatCount });
+      const repeatCount = isSameRequestAndResult ? (oldRequestCount ?? 1) + 1 : undefined;
       return {
         ...state,
         status: { ...action, repeatCount },
