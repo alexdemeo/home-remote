@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { RokuAppData, RokuTvData } from '../../static/types';
-import { StatusProps } from '../Status';
 import { RemoteButton } from './RemoteButton';
 import { req, Row } from './util';
 
@@ -9,35 +8,20 @@ const AppGroupContainer = styled.div`
   flex-direction: column;
 `;
 
-export function RokuApps({
-  appData,
-  setStatus,
-}: {
-  appData: RokuTvData;
-  setStatus: (status: StatusProps) => void;
-}): JSX.Element {
+export function RokuApps({ appData }: { appData: RokuTvData }): JSX.Element {
   return (
     <AppGroupContainer>
-      <Apps apps={appData.inputs} setStatus={setStatus} textEnabled />
-      <Apps apps={appData.apps} setStatus={setStatus} textEnabled={false} />
+      <Apps apps={appData.inputs} textEnabled />
+      <Apps apps={appData.apps} textEnabled={false} />
     </AppGroupContainer>
   );
 }
-function Apps({
-  apps,
-  setStatus,
-  textEnabled,
-}: {
-  apps: RokuAppData[];
-  setStatus: (status: StatusProps) => void;
-  textEnabled: boolean;
-}): JSX.Element {
+function Apps({ apps, textEnabled }: { apps: RokuAppData[]; textEnabled: boolean }): JSX.Element {
   const apps_ = apps.map((app, i) => (
     <RemoteButton
       key={`input-${i}`}
       icon={{ blob: app.image, text: textEnabled ? app.name : undefined }}
       request={req(app.launchId, 'launch')}
-      setStatus={setStatus}
       enabled={true}
     />
   ));

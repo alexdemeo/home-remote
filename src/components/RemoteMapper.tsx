@@ -2,9 +2,7 @@ import styled from 'styled-components';
 import { Remote } from '../static/types';
 import { RokuRemote } from './roku/RokuRemote';
 import { RemoteSelector } from './RemoteSelector';
-import { Status, StatusProps } from './Status';
-import { defaultSettings } from '../static/contants';
-import { useState } from 'react';
+import { Status } from './Status';
 import { CoffeeRemote } from './CoffeeRemote';
 import { Bar } from './Bar';
 import { PrinterStationRemote } from './PrinterStationRemote';
@@ -19,24 +17,22 @@ interface Props {
 }
 
 export function RemoteMapper({ remote }: Props): JSX.Element {
-  const settings = defaultSettings;
-  const [status, setStatus] = useState<StatusProps>({ status: undefined, endpoint: '❌' });
   let comp: JSX.Element;
   switch (remote) {
     case Remote.ROKU:
-      comp = <RokuRemote settings={settings} setStatus={setStatus} />;
+      comp = <RokuRemote />;
       break;
     case Remote.COFFEE:
-      comp = <CoffeeRemote setStatus={setStatus} />;
+      comp = <CoffeeRemote />;
       break;
     case Remote.STATION:
-      comp = <PrinterStationRemote setStatus={setStatus} />;
+      comp = <PrinterStationRemote />;
       break;
   }
   return (
     <Container>
-      <RemoteSelector remote={remote} onRefresh={() => {}} />
-      <Status {...status} />
+      <RemoteSelector remote={remote} />
+      <Status />
       <Bar />
       {comp}
     </Container>

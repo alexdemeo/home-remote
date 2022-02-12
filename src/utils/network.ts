@@ -1,5 +1,6 @@
 import { ActionRequest, ActionResponse, Remote, RokuAppData, RokuTvData } from '../static/types';
-import { StatusProps } from '../components/Status';
+import { RemoteAction } from '../reducer';
+import React from 'react';
 
 export async function network(request: ActionRequest): Promise<ActionResponse> {
   const url = `/${request.remote}${request.endpoint}`;
@@ -54,18 +55,18 @@ export async function getAppsDataFromDevice(): Promise<RokuTvData> {
 
 export function networkStatusWrapper(
   request: ActionRequest,
-  setStatus: (status: StatusProps) => void,
+  dispatch: React.Dispatch<RemoteAction>,
   callback?: (succeeded: boolean) => void,
 ): void {
   network(request)
     .then(response => {
       console.log('Received: ', JSON.stringify(response));
-      setStatus({ ...response, endpoint: request.endpoint });
+      dispatch({ type: 'setStatus', code: response.status, endpoint: request.endpoint });
       callback?.(true);
     })
     .catch(err => {
       console.error('Error: ', err.message);
-      setStatus({ status: err.message, endpoint: request.endpoint });
+      dispatch({ type: 'setStatus', code: err.message, endpoint: request.endpoint });
       callback?.(false);
     });
 }

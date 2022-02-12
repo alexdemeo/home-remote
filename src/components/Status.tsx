@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useRemoteReducer } from '../reducer';
 
 const Container = styled.div`
   display: flex;
@@ -9,16 +10,15 @@ const Container = styled.div`
   color: white;
 `;
 
-export interface StatusProps {
-  status: number | undefined;
-  endpoint: string;
-}
-
-export function Status({ status, endpoint }: StatusProps): JSX.Element {
+export function Status(): JSX.Element {
+  const [state] = useRemoteReducer();
+  const {
+    status: { code, endpoint },
+  } = state;
   return (
     <Container>
-      {status ?? 'x'}
-      <StatusCircle status={status} />
+      {code ?? 'x'}
+      <StatusCircle status={code} />
       {endpoint}
     </Container>
   );

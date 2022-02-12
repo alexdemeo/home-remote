@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BUTTON_BORDER_COLOR } from '../static/contants';
+import { BUTTON_BORDER_COLOR } from '../static/constants';
 
 const BarContainer = styled.div`
   width: 80%;

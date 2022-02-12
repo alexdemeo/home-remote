@@ -1,7 +1,7 @@
 import { Remote } from '../static/types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { BUTTON_BORDER_COLOR } from '../static/contants';
+import { BUTTON_BORDER_COLOR } from '../static/constants';
 
 const Container = styled.div`
   display: flex;
@@ -40,15 +40,14 @@ const remotes = Object.values(Remote);
 
 interface Props {
   remote: Remote;
-  onRefresh: () => void;
 }
 
-export function RemoteSelector({ remote, onRefresh }: Props): JSX.Element {
+export function RemoteSelector({ remote }: Props): JSX.Element {
   return (
     <Container>
       <SmallSpace />
       {remotes.map(_remote => (
-        <RemoteLink to={`/${_remote}`}>
+        <RemoteLink to={`/${_remote}`} key={_remote}>
           <SingleRemoteSelector selected={_remote === remote}>{_remote}</SingleRemoteSelector>
         </RemoteLink>
       ))}

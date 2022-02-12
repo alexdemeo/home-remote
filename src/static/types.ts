@@ -4,8 +4,6 @@ export enum Remote {
   STATION = 'station',
 }
 
-export type Settings = { [remote in Remote]: any };
-
 export interface ActionRequest {
   httpMethod: string;
   remote: Remote;
@@ -28,3 +26,14 @@ export type RokuAppData = {
 export type RokuTvData = { inputs: RokuAppData[]; apps: RokuAppData[] };
 
 export type ApplianceStatus = 'on' | 'off' | 'unknown';
+
+export type StatusState = { code: number | undefined; endpoint: string };
+
+export type GlobalState = {
+  status: StatusState;
+  [Remote.ROKU]: {
+    keyCommandsEnabled: boolean;
+  };
+  [Remote.COFFEE]: {};
+  [Remote.STATION]: {};
+};

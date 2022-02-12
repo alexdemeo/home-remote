@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import { ActionRequest } from '../../static/types';
-import { BUTTON_BORDER_COLOR } from '../../static/contants';
+import { BUTTON_BORDER_COLOR } from '../../static/constants';
 import { networkStatusWrapper } from '../../utils/network';
-import { StatusProps } from '../Status';
 import { isMobile } from 'react-device-detect';
 import { useEffect } from 'react';
+import { useRemoteReducer } from '../../reducer';
 
 const Container = styled.div<{ isShortIcon: boolean }>`
   // single character icon big: 32. mobile text small: 16. desktop text big not matter what (48)
@@ -22,7 +22,6 @@ const Container = styled.div<{ isShortIcon: boolean }>`
 interface Props {
   icon: string | ImageButtonProps;
   request: ActionRequest;
-  setStatus: (status: StatusProps) => void;
   enabled: boolean;
   // key is taken by react. not inventive enough to abandon the object structure implying key.bind
   key_?: {
@@ -37,23 +36,24 @@ const REPEAT_DELAY_MS = 350;
 
 let repeatTimer: NodeJS.Timeout | undefined = undefined;
 let delayTimer: NodeJS.Timeout | undefined = undefined;
-export function RemoteButton({ icon, request, setStatus, key_, doRepeat, enabled }: Props): JSX.Element {
+export function RemoteButton({ icon, request, key_, doRepeat, enabled }: Props): JSX.Element {
   const key = key_;
+  const [, dispatch] = useRemoteReducer();
   useEffect(() => {
     if (key?.enabled) {
       const keyDown = (event: KeyboardEvent) => {
         // console.log(event.key);
         if (key?.enabled && event.key === key?.bind && enabled) {
           console.log(event.key, key?.bind);
-          networkStatusWrapper(request, setStatus);
+          networkStatusWrapper(request, dispatch);
         }
       };
       window.addEventListener('keydown', keyDown, true);
       return () => window.removeEventListener('keydown', keyDown, true);
     }
-  }, [key, request, setStatus, enabled]);
+  }, [key, request, dispatch, enabled]);
 
-  const onClick = () => networkStatusWrapper(request, setStatus);
+  const onClick = () => networkStatusWrapper(request, dispatch);
   // const onClick = () => console.log('onclick', request.endpoint);
 
   const resetTimers = () => {

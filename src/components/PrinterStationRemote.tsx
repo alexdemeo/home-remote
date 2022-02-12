@@ -1,16 +1,12 @@
-import { StatusProps } from './Status';
 import { ActionRequest, ApplianceStatus, Remote } from '../static/types';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { network, networkStatusWrapper } from '../utils/network';
 import { OnOffPanel } from './OnOffPanel';
 import { Bar } from './Bar';
+import { useRemoteReducer } from '../reducer';
 
 const Container = styled.div``;
-
-interface Props {
-  setStatus: (status: StatusProps) => void;
-}
 
 const printerStatusReq: ActionRequest = {
   remote: Remote.STATION,
@@ -26,29 +22,30 @@ const lightsStatusReq: ActionRequest = {
   httpMethod: 'GET',
 };
 
-export function PrinterStationRemote({ setStatus }: Props): JSX.Element {
+export function PrinterStationRemote(): JSX.Element {
   const [printerStatus, setPrinterStatus] = useState<ApplianceStatus>('unknown');
   const [lightsStatus, setLightsStatus] = useState<ApplianceStatus>('unknown');
+  const [, dispatch] = useRemoteReducer();
   useEffect(() => {
     network(printerStatusReq)
       .then(result => {
         setPrinterStatus(result.textData as ApplianceStatus);
-        setStatus({ ...result, endpoint: printerStatusReq.endpoint });
+        dispatch({ type: 'setStatus', code: result.status, endpoint: printerStatusReq.endpoint });
       })
       .catch(err => {
         console.error(err);
-        setStatus({ status: err.message, endpoint: printerStatusReq.endpoint });
+        dispatch({ type: 'setStatus', code: err.message, endpoint: printerStatusReq.endpoint });
       });
     network(lightsStatusReq)
       .then(result => {
         setLightsStatus(result.textData as ApplianceStatus);
-        setStatus({ ...result, endpoint: lightsStatusReq.endpoint });
+        dispatch({ type: 'setStatus', code: result.status, endpoint: lightsStatusReq.endpoint });
       })
       .catch(err => {
         console.error(err);
-        setStatus({ status: err.message, endpoint: lightsStatusReq.endpoint });
+        dispatch({ type: 'setStatus', code: err.message, endpoint: lightsStatusReq.endpoint });
       });
-  }, [setStatus]);
+  }, [dispatch]);
   return (
     <Container>
       <OnOffPanel
@@ -56,7 +53,7 @@ export function PrinterStationRemote({ setStatus }: Props): JSX.Element {
         onAction={action =>
           networkStatusWrapper(
             { remote: Remote.STATION, endpoint: `/station/printer/${action}`, type: 'text', httpMethod: 'PUT' },
-            setStatus,
+            dispatch,
             succeeded => succeeded && setPrinterStatus(printerStatus === 'on' ? 'off' : 'on'),
           )
         }
@@ -67,7 +64,7 @@ export function PrinterStationRemote({ setStatus }: Props): JSX.Element {
         onAction={action =>
           networkStatusWrapper(
             { remote: Remote.STATION, endpoint: `/station/lights/${action}`, type: 'text', httpMethod: 'PUT' },
-            setStatus,
+            dispatch,
             succeeded => succeeded && setLightsStatus(lightsStatus === 'on' ? 'off' : 'on'),
           )
         }
