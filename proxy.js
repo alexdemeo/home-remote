@@ -34,7 +34,7 @@ app.use((req, res, next) => {
 app.use('/', express.static(buildPath));
 app.use('/static', express.static(staticPath));
 
-app.use(endpoints.roku, (req, res, next) => proxy('192.168.1.226:8060')(req, res, next));
+app.use(endpoints.roku, (req, res, next) => proxy('192.168.1.225:8060')(req, res, next));
 app.use(endpoints.coffee, (req, res, next) => proxy('pi3.local:5000')(req, res, next));
 app.use(endpoints.station, (req, res, next) => proxy(`pi2.local:5555`)(req, res, next));
 
