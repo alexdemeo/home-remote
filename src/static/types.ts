@@ -31,6 +31,7 @@ export type StatusState = { code: number | undefined; endpoint: string; repeatCo
 
 export type GlobalState = {
   status: StatusState;
+  tab: Remote;
   [Remote.ROKU]: {
     keyCommandsEnabled: boolean;
   };

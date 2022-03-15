@@ -1,11 +1,11 @@
-import React from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { Remote } from './static/types';
 import styled from 'styled-components';
 import { RemoteMapper } from './components/RemoteMapper';
 import { isMobile } from 'react-device-detect';
 import { BUTTON_BORDER_COLOR, REMOTE_BACKGROUND_COLOR } from './static/constants';
-import { RemoteStoreProvider } from './RemoteStoreProvider';
+import { LOCAL_STORAGE_CACHED_STATE_KEY, RemoteStoreProvider } from './RemoteStoreProvider';
 
 const RemoteContainer = styled.div`
   width: ${isMobile ? '90%' : '500px'};
@@ -27,7 +27,19 @@ function App() {
       return false;
     }
   };
-
+  const location = useLocation();
+  const currSetting = JSON.parse(localStorage.getItem(LOCAL_STORAGE_CACHED_STATE_KEY) ?? '{ "tab": "roku" }');
+  useEffect(
+    () =>
+      localStorage.setItem(
+        LOCAL_STORAGE_CACHED_STATE_KEY,
+        JSON.stringify({ ...currSetting, tab: location.pathname.slice(1) }),
+      ),
+    [currSetting, location.pathname],
+  );
+  if (location.pathname === '/') {
+    return <Navigate to={currSetting.tab} />;
+  }
   return (
     <Routes>
       {Object.values(Remote).map(remote => (
@@ -43,7 +55,6 @@ function App() {
           }
         />
       ))}
-      <Route path="/" element={<Navigate to={Remote.ROKU} />} />
     </Routes>
   );
 }

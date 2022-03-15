@@ -35,8 +35,10 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "start-proxy": "node --trace-warnings proxy.js",
+    "start-proxy-dev": "PORT=4000 yarn start-proxy",
     "start-pi": "yarn build && yarn start-proxy >> console.proxy.log.txt 2>&1 &",
     "start-electron": "electron public/electron.js",
+    "start-electron-dev": "HOME_ENV=development yarn start-electron",
     "build-electron": "yarn build &&./node_modules/electron-builder/cli.js && unzip dist/home-remote-0.1.0-mac.zip && cp -r home-remote.app /Applications && rm -r home-remote.app"
   },
   "build": {
