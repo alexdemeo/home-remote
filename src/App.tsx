@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import { Remote } from './static/types';
+import { GlobalState, Remote } from './static/types';
 import styled from 'styled-components';
 import { RemoteMapper } from './components/RemoteMapper';
 import { isMobile } from 'react-device-detect';
-import { BUTTON_BORDER_COLOR, REMOTE_BACKGROUND_COLOR } from './static/constants';
+import { BUTTON_BORDER_COLOR, INITIAL_STATE, REMOTE_BACKGROUND_COLOR } from './static/constants';
 import { LOCAL_STORAGE_CACHED_STATE_KEY, RemoteStoreProvider } from './RemoteStoreProvider';
 
 const RemoteContainer = styled.div`
@@ -28,7 +28,9 @@ function App() {
     }
   };
   const location = useLocation();
-  const currSetting = JSON.parse(localStorage.getItem(LOCAL_STORAGE_CACHED_STATE_KEY) ?? '{ "tab": "roku" }');
+  const currSetting: GlobalState = JSON.parse(
+    localStorage.getItem(LOCAL_STORAGE_CACHED_STATE_KEY) ?? JSON.stringify(INITIAL_STATE),
+  );
   useEffect(
     () =>
       localStorage.setItem(
