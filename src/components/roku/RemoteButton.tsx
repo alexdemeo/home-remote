@@ -1,10 +1,15 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { ActionRequest } from '../../static/types';
 import { BUTTON_BORDER_COLOR } from '../../static/constants';
 import { networkStatusWrapper } from '../../utils/network';
 import { isMobile } from 'react-device-detect';
 import { useEffect } from 'react';
 import { useRemoteStore } from '../../RemoteStoreProvider';
+
+const shrink = keyframes`
+  from { transform: scale(1) }
+  to { transform: scale(0.85) }
+`;
 
 const Container = styled.div<{ isShortIcon: boolean }>`
   // single character icon big: 32. mobile text small: 16. desktop text big not matter what (48)
@@ -17,6 +22,9 @@ const Container = styled.div<{ isShortIcon: boolean }>`
   color: white;
   transform: scale(${({ isShortIcon }) => (isShortIcon ? 115 : 100)}%);
   width: ${({ isShortIcon }) => (isShortIcon ? '56px' : 'inherit')};
+  :active {
+    animation: ${shrink} 200ms ease;
+  }
 `;
 
 interface Props {
