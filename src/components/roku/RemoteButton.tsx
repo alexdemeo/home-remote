@@ -3,13 +3,17 @@ import { ActionRequest } from '../../static/types';
 import { BUTTON_BORDER_COLOR } from '../../static/constants';
 import { networkStatusWrapper } from '../../utils/network';
 import { isMobile } from 'react-device-detect';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useRemoteStore } from '../../RemoteStoreProvider';
 
 const shrink = keyframes`
   from { transform: scale(1) }
   to { transform: scale(0.85) }
 `;
+
+const HOLD_DELAY_TO_TRIGGER_REPEAT_MS = 300;
+const REPEAT_DELAY_MS = 350;
+const BUTTON_PRESS_ANIMATION_DURATION_MS = 300;
 
 const Container = styled.div<{ isShortIcon: boolean }>`
   // single character icon big: 32. mobile text small: 16. desktop text big not matter what (48)
@@ -23,9 +27,12 @@ const Container = styled.div<{ isShortIcon: boolean }>`
   transform: scale(${({ isShortIcon }) => (isShortIcon ? 115 : 100)}%);
   width: ${({ isShortIcon }) => (isShortIcon ? '56px' : 'inherit')};
   :active {
-    animation: ${shrink} 200ms ease;
+    animation: ${shrink} ${BUTTON_PRESS_ANIMATION_DURATION_MS}ms ease;
   }
 `;
+
+let repeatTimer: NodeJS.Timeout | undefined = undefined;
+let delayTimer: NodeJS.Timeout | undefined = undefined;
 
 interface Props {
   icon: string | ImageButtonProps;
@@ -39,30 +46,26 @@ interface Props {
   doRepeat?: boolean;
 }
 
-const HOLD_DELAY_TO_TRIGGER_REPEAT_MS = 300;
-const REPEAT_DELAY_MS = 350;
-
-let repeatTimer: NodeJS.Timeout | undefined = undefined;
-let delayTimer: NodeJS.Timeout | undefined = undefined;
 export function RemoteButton({ icon, request, key_, doRepeat, enabled }: Props): JSX.Element {
   const key = key_;
   const [state, dispatch] = useRemoteStore();
+
+  const onClick = useCallback(() => networkStatusWrapper(request, dispatch), [request, dispatch]);
+  // const onClick = useCallback(() => console.log('onclick', request.endpoint), [request]);
+
   useEffect(() => {
     if (key?.enabled) {
       const keyDown = (event: KeyboardEvent) => {
         // console.log(event.key);
         if (key?.enabled && event.key === key?.bind && enabled) {
           console.log(event.key, key?.bind);
-          networkStatusWrapper(request, dispatch);
+          onClick();
         }
       };
       window.addEventListener('keydown', keyDown, true);
       return () => window.removeEventListener('keydown', keyDown, true);
     }
-  }, [key, request, state, dispatch, enabled]);
-
-  const onClick = () => networkStatusWrapper(request, dispatch);
-  // const onClick = () => console.log('onclick', request.endpoint);
+  }, [key, request, state, dispatch, enabled, onClick]);
 
   const resetTimers = () => {
     clearTimeout(delayTimer!);
