@@ -13,7 +13,7 @@ const shrink = keyframes`
 
 const HOLD_DELAY_TO_TRIGGER_REPEAT_MS = 300;
 const REPEAT_DELAY_MS = 350;
-const BUTTON_PRESS_ANIMATION_DURATION_MS = 300;
+const BUTTON_PRESS_ANIMATION_DURATION_MS = 100;
 
 const Container = styled.div<{ isShortIcon: boolean }>`
   // single character icon big: 32. mobile text small: 16. desktop text big not matter what (48)
@@ -28,6 +28,7 @@ const Container = styled.div<{ isShortIcon: boolean }>`
   width: ${({ isShortIcon }) => (isShortIcon ? '56px' : 'inherit')};
   :active {
     animation: ${shrink} ${BUTTON_PRESS_ANIMATION_DURATION_MS}ms ease;
+    background-color: black;
   }
 `;
 
