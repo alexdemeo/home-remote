@@ -26,8 +26,8 @@
     "web-vitals": "^1.0.1"
   },
   "devDependencies": {
-    "electron": "^13.3.0",
-    "electron-builder": "^22.14.5"
+    "electron": "^18.2.0",
+    "electron-builder": "^23.0.3"
   },
   "scripts": {
     "dev": "PORT=4001 react-scripts start",

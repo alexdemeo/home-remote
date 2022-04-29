@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { createRef, useEffect } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { GlobalState, Remote } from './static/types';
 import styled from 'styled-components';
 import { RemoteMapper } from './components/RemoteMapper';
-import { isMobile } from 'react-device-detect';
+import { isElectron, isMobile } from 'react-device-detect';
 import { BUTTON_BORDER_COLOR, INITIAL_STATE, REMOTE_BACKGROUND_COLOR } from './static/constants';
 import { LOCAL_STORAGE_CACHED_STATE_KEY, RemoteStoreProvider } from './RemoteStoreProvider';
 
@@ -12,11 +12,19 @@ const RemoteContainer = styled.div`
   border-radius: 24px;
   border: 4px solid ${BUTTON_BORDER_COLOR};
   text-align: center;
-  margin: auto;
+  margin: 0 auto;
   padding: 16px;
   background-color: ${REMOTE_BACKGROUND_COLOR};
   -webkit-touch-callout: none;
   -webkit-user-select: none; /* Disable selection/copy in UIWebView */
+
+  ${isElectron &&
+  `
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  `}
 `;
 
 function App() {
@@ -39,6 +47,24 @@ function App() {
       ),
     [currSetting, location.pathname],
   );
+
+  const remoteContainerRef: React.RefObject<HTMLDivElement> = createRef();
+  const observer = React.useRef(
+    new ResizeObserver(entries => {
+      if (isElectron) {
+        const { target } = entries[0];
+        // I have no idea why these are too large, * 0.8 looks about right on my laptop
+        const [width, height] = [target.clientWidth ?? 0, target.clientHeight ?? 0].map(x => x * 0.8);
+        window.require('electron').ipcRenderer.send('resize-electron-plz', Math.round(width), Math.round(height));
+      }
+    }),
+  );
+  useEffect(() => {
+    if (remoteContainerRef.current) {
+      observer.current.observe(remoteContainerRef.current);
+    }
+  }, [remoteContainerRef, observer]);
+
   if (location.pathname === '/') {
     return <Navigate to={currSetting.tab} />;
   }
@@ -50,7 +76,7 @@ function App() {
           path={remote}
           element={
             <RemoteStoreProvider>
-              <RemoteContainer>
+              <RemoteContainer ref={remoteContainerRef}>
                 <RemoteMapper remote={remote} />
               </RemoteContainer>
             </RemoteStoreProvider>
