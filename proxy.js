@@ -4,6 +4,8 @@ const morgan = require('morgan');
 const path = require('path');
 const proxy = require('express-http-proxy');
 
+require('dotenv').config();
+
 const PORT = +(process.env.PORT || 80);
 const HOST = '0.0.0.0';
 
@@ -34,15 +36,23 @@ app.use((req, res, next) => {
 app.use('/', express.static(buildPath));
 app.use('/static', express.static(staticPath));
 
-app.use(endpoints.roku, (req, res, next) => proxy('192.168.1.226:8060')(req, res, next));
-app.use(endpoints.coffee, (req, res, next) => proxy('pi3.local:5000')(req, res, next));
-app.use(endpoints.station, (req, res, next) => proxy(`pi2.local:5555`)(req, res, next));
+const [ADDR_ROKU, ADDR_COFFEE, ADDR_STATION] = ['ADDR_ROKU', 'ADDR_COFFEE', 'ADDR_STATION'].map(
+  addr => process.env[addr],
+);
+
+if (![ADDR_ROKU, ADDR_COFFEE, ADDR_STATION].every(Boolean)) {
+  throw new Error('Must provide all of [ADDR_ROKU, ADDR_COFFEE, ADDR_STATION] env vars');
+}
+
+app.use(endpoints.roku, (req, res, next) => proxy(ADDR_ROKU)(req, res, next));
+app.use(endpoints.coffee, (req, res, next) => proxy(ADDR_COFFEE)(req, res, next));
+app.use(endpoints.station, (req, res, next) => proxy(ADDR_STATION)(req, res, next));
 
 app.all('/', (req, res) => {
   console.log('response static to', req.hostname, 'ip', req.ip, 'path', req.path, 'with', res.statusCode);
   res.sendFile(indexPath);
 });
 
-app.listen(PORT, HOST, function () {
+app.listen(PORT, HOST, () => {
   console.log('Express server listening on port ' + PORT);
 });
