@@ -9,11 +9,18 @@ export async function network(request: ActionRequest): Promise<ActionResponse> {
     method: request.httpMethod,
     headers: [['Content-Type', 'application/json']],
   });
-  return {
-    status: fetchResult.status,
-    textData: request.type === 'text' ? await fetchResult.text() : undefined,
-    blobData: request.type === 'blob' ? await fetchResult.blob() : undefined,
-  };
+  if (fetchResult.status >= 500) {
+    return {
+      status: fetchResult.status,
+      textData: 'error',
+    };
+  } else {
+    return {
+      status: fetchResult.status,
+      textData: request.type === 'text' ? await fetchResult.text() : undefined,
+      blobData: request.type === 'blob' ? await fetchResult.blob() : undefined,
+    };
+  }
 }
 
 export async function getAppsDataFromDevice(): Promise<RokuTvData> {

@@ -30,7 +30,7 @@ interface Props {
   onButtonNotificationDelayMinutes?: number; // if undefined, no don't send a delayed "applianceName" been on x minutes notification
 }
 
-const StatusText = styled.div<{ borderColor: string }>`
+const StatusText = styled.div<{ borderColor: string; fontColor?: string }>`
   font-size: 48px;
   font-weight: bolder;
   font-style: italic;
@@ -38,6 +38,7 @@ const StatusText = styled.div<{ borderColor: string }>`
   border: 4px solid ${({ borderColor }) => borderColor};
   padding: 0 16px;
   margin: auto;
+  color: ${({ fontColor }) => fontColor ?? 'default'};
 `;
 
 const OuterStatusText = styled.div`
@@ -48,6 +49,8 @@ const OuterStatusText = styled.div`
 const RED = '#ff6060';
 const GREEN = '#abff63';
 const YELLOW = '#ffdc68';
+const DARK_YELLOW = '#b29a00';
+
 export function OnOffPanel({
   onAction,
   applianceName,
@@ -75,7 +78,9 @@ export function OnOffPanel({
   return (
     <Stack>
       <OuterStatusText>{applianceName} status</OuterStatusText>
-      <StatusText borderColor={statusToColor(status)}>{status.toUpperCase()}</StatusText>
+      <StatusText borderColor={statusToColor(status)} fontColor={status === 'error' ? DARK_YELLOW : undefined}>
+        {status.toUpperCase()}
+      </StatusText>
       <Container>
         <Button color={RED} disabled={status === 'off'} onClick={clickOff}>
           off
@@ -94,6 +99,8 @@ function statusToColor(status: ApplianceStatus): string {
       return GREEN;
     case 'off':
       return RED;
+    case 'error':
+      return DARK_YELLOW;
     case 'unknown':
       return YELLOW;
   }
