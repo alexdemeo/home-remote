@@ -12,7 +12,7 @@ const shrink = keyframes`
 `;
 
 const HOLD_DELAY_TO_TRIGGER_REPEAT_MS = 300;
-const REPEAT_DELAY_MS = 350;
+const REPEAT_DELAY_MS = 275;
 const BUTTON_PRESS_ANIMATION_DURATION_MS = 100;
 
 const Container = styled.div<{ isShortIcon: boolean }>`
