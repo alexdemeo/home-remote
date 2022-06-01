@@ -3,7 +3,7 @@ import { getAppsDataFromDevice, networkStatusWrapper } from '../../utils/network
 import { req, Row } from './util';
 import { Remote, RokuTvData } from '../../static/types';
 import { RemoteButton } from './RemoteButton';
-import { useEffect, useState } from 'react';
+import { RefObject, useEffect, useRef, useState } from 'react';
 import { Bar } from '../Bar';
 import { RokuApps } from './RokuApps';
 import { useRemoteStore } from '../../RemoteStoreProvider';
@@ -43,11 +43,14 @@ const DPad = styled.div`
 export function RokuRemote(): JSX.Element {
   const [state, dispatch] = useRemoteStore();
   const [appData, setAppData] = useState<RokuTvData>({ inputs: [], apps: [] });
-
   const [isSearching, setIsSearching] = useState<boolean>(false);
+
+  const topRef: RefObject<HTMLBRElement> = useRef(null);
+
   useEffect(() => {
     getAppsDataFromDevice()
       .then(setAppData)
+      .then(() => topRef.current?.scrollIntoView())
       .catch(error => {
         console.error(error);
         dispatch({ type: 'setStatus', code: undefined, endpoint: '/query/apps' });
@@ -57,10 +60,11 @@ export function RokuRemote(): JSX.Element {
     evt.currentTarget.setSelectionRange(1, 1);
     setIsSearching(true);
   };
+
   const { keyCommandsEnabled: enabled } = state[Remote.ROKU];
   return (
     <Column>
-      <br />
+      <br ref={topRef} />
       <Row>
         <Checkbox
           type="checkbox"
