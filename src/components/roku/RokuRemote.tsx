@@ -158,9 +158,9 @@ export function RokuRemote(): JSX.Element {
           <RemoteButton icon="*" request={req('Info')} enabled={!isSearching} />
         </Row>
         <Row>
-          <RemoteButton icon="⦉⦉" request={req('Rev')} enabled={!isSearching} doRepeat />
+          <RemoteButton icon="⦉⦉" key_={{ bind: '[', enabled }} request={req('Rev')} enabled={!isSearching} doRepeat />
           <RemoteButton icon="▻⫾⫾" key_={{ bind: ' ', enabled }} request={req('Play')} enabled={!isSearching} />
-          <RemoteButton icon="⦊⦊" request={req('Fwd')} enabled={!isSearching} doRepeat />
+          <RemoteButton icon="⦊⦊" key_={{ bind: ']', enabled }} request={req('Fwd')} enabled={!isSearching} doRepeat />
         </Row>
       </Column>
       <Bar />
