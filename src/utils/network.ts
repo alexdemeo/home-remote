@@ -69,7 +69,7 @@ export function networkStatusWrapper(
     .then(response => {
       console.log('Received: ', JSON.stringify(response));
       dispatch({ type: 'setStatus', code: response.status, endpoint: request.endpoint });
-      callback?.(true);
+      callback?.(response.status !== 500);
     })
     .catch(err => {
       console.error('Error: ', err.message);

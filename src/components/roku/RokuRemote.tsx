@@ -48,9 +48,13 @@ export function RokuRemote(): JSX.Element {
   const topRef: RefObject<HTMLBRElement> = useRef(null);
 
   useEffect(() => {
+    networkStatusWrapper(
+      { httpMethod: 'GET', remote: Remote.ROKU, endpoint: '/query/media-player', type: 'text' },
+      dispatch,
+      succeeded => succeeded && topRef.current?.scrollIntoView(),
+    );
     getAppsDataFromDevice()
       .then(setAppData)
-      .then(() => topRef.current?.scrollIntoView())
       .catch(error => {
         console.error(error);
         dispatch({ type: 'setStatus', code: undefined, endpoint: '/query/apps' });
